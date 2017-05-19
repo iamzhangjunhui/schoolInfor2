@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/txt_see_message_student_id"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="学号"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
+
+            <TextView
+                android:paddingLeft="5dp"
+                android:id="@+id/txt_see_message_student_name"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="姓名"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:id="@+id/txt_see_message_student_department"
+
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="系"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:paddingLeft="5dp"
+            android:id="@+id/txt_see_message_student_clazz"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="班级"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/accept_time"
+            android:textColor="@color/text_light_colored"
+            android:textSize="@dimen/content_text_size" />
+
+        <TextView
+            android:id="@+id/txt_see_message_accept_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="yyyy-MM-dd"
+            android:textColor="@color/text_light_colored"
+            android:textSize="@dimen/content_text_size" />
+
+    </LinearLayout>
+</LinearLayout>

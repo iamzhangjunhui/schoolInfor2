@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="IMKit-2.0.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/wx/libs/IMKit-2.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

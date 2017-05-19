@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_see_message_students"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cdxy.schoolinforapplication.ui.Message.SeeMessageStudentsActivity">
+
+    <include layout="@layout/view_title" />
+
+    <LinearLayout
+        android:id="@+id/layout_show_progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/see_students_number"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/content_text_size" />
+
+        <TextView
+            android:id="@+id/txt_see_message_student_number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingRight="10dp"
+            android:text="*"
+            android:textColor="@color/text_red_color"
+            android:textSize="@dimen/content_text_size" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.cdxy.schoolinforapplication.ui.widget.ScrollListView
+            android:id="@+id/scroll_see_message_student"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+</LinearLayout>

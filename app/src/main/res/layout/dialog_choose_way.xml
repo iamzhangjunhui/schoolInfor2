@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/add_border_light_color_white">
+<TextView
+    android:id="@+id/txt_way1"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+   android:textColor="@color/top_color"
+    android:text="@string/call"
+    android:textSize="@dimen/messege_title_text_size"
+    android:gravity="center"/>
+<include layout="@layout/separate_line_top_color_1dp"/>
+    <TextView
+        android:id="@+id/txt_way2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textColor="@color/top_color"
+        android:text="@string/send_SMS"
+        android:textSize="@dimen/messege_title_text_size"
+        android:gravity="center"/>
+</LinearLayout>

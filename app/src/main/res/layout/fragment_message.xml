@@ -1,0 +1,242 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cdxy.schoolinforapplication.ui.Message.MessageFragment">
+
+    <LinearLayout
+        android:id="@+id/layout_important_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/img_icon1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/import_message" />
+
+            <FrameLayout
+                android:visibility="gone"
+                android:layout_alignRight="@+id/img_icon1"
+                android:layout_width="20dp"
+                android:layout_height="20dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/red_point" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/content_text_size" />
+            </FrameLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size"
+                android:text="@string/important_message"
+                android:gravity="center_vertical"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_colored"
+                android:textSize="@dimen/content_text_size"
+                android:text="@string/explain_no_important_message" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_colored"
+                android:textSize="@dimen/content_text_size"
+                android:text="yyyy-MM-dd"
+                android:visibility="gone"
+                android:gravity="right"/>
+        </LinearLayout>
+    </LinearLayout>
+    <include layout="@layout/separate_line_1dp_margin10dp"/>
+    <LinearLayout
+        android:id="@+id/layout_not_important_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/img_icon2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/not_import_message" />
+
+            <FrameLayout
+                android:visibility="gone"
+                android:layout_alignRight="@+id/img_icon2"
+                android:layout_width="20dp"
+                android:layout_height="20dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/red_point" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/content_text_size" />
+            </FrameLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size"
+                android:text="@string/not_important_message"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_colored"
+                android:textSize="@dimen/content_text_size"
+                android:text="@string/explain_no_not_important_message" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_colored"
+                android:textSize="@dimen/content_text_size"
+                android:text="yyyy-MM-dd"
+                android:visibility="gone"
+                android:gravity="right"/>
+        </LinearLayout>
+    </LinearLayout>
+    <include layout="@layout/separate_line_1dp_margin10dp"/>
+    <LinearLayout
+        android:id="@+id/layout_my_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/img_icon3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/my_message" />
+
+            <FrameLayout
+                android:visibility="gone"
+                android:layout_alignRight="@+id/img_icon3"
+                android:layout_width="20dp"
+                android:layout_height="20dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/red_point" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/content_text_size" />
+            </FrameLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size"
+                android:text="@string/my_message"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_colored"
+                android:textSize="@dimen/content_text_size"
+                android:text="@string/explain_no_my_message" />
+
+            <TextView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_colored"
+                android:textSize="@dimen/content_text_size"
+                android:text="yyyy-MM-dd"
+                android:gravity="right" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--<include layout="@layout/separate_line_1dp_margin10dp"/>-->
+    <!--<LinearLayout-->
+        <!--android:id="@+id/not_see_message"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:paddingTop="5dp"-->
+        <!--android:paddingBottom="5dp"-->
+        <!--android:paddingRight="10dp"-->
+        <!--android:paddingLeft="10dp">-->
+
+        <!--<Button-->
+            <!--android:id="@+id/not_see_list"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="未查看消息的学生列表"/>-->
+    <!--</LinearLayout>-->
+</LinearLayout>

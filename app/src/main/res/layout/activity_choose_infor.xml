@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_choose_department"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cdxy.schoolinforapplication.ui.ChooseInfor.ChooseInforActivity">
+<include layout="@layout/view_title"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            <com.cdxy.schoolinforapplication.ui.widget.ScrollListView
+                android:id="@+id/scroll_list_infor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+    </ScrollView>
+
+</LinearLayout>

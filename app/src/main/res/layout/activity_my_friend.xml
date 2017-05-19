@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_friend"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cdxy.schoolinforapplication.ui.chat.MyFriendActivity">
+
+    <include layout="@layout/view_title" />
+
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/swiplist_my_friend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

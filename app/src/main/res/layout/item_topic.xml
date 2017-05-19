@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_topic_icon"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/loading" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="5dp">
+
+            <TextView
+                android:id="@+id/txt_topic_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/messege_title_text_size" />
+
+            <TextView
+                android:id="@+id/txt_topic_create_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_colored"
+                android:textSize="@dimen/small_text_size" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_topic_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="2dp"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/content_text_size" />
+
+    <FrameLayout
+        android:id="@+id/frame_photos"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:visibility="gone">
+
+        <GridView
+            android:id="@+id/gridView_photos"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:horizontalSpacing="1dp"
+            android:numColumns="4" />
+
+        <TextView
+            android:id="@+id/txt_more_photo_number"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/number_see_more_photo"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
+
+        <ImageView
+            android:id="@+id/img_comment"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:src="@drawable/add_comment" />
+
+        <ImageView
+            android:id="@+id/img_thumb"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:src="@drawable/good" />
+
+        <ImageView
+            android:id="@+id/img_delete"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:src="@drawable/delete"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/layout_divider"
+        layout="@layout/separate_line_1dp_margin10dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txt_thumb_persons_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:text="点赞人昵称"
+        android:textColor="@color/text_name"
+        android:textSize="@dimen/small_text_size"
+        android:visibility="gone" />
+
+    <com.cdxy.schoolinforapplication.ui.widget.ScrollListView
+        android:id="@+id/scroll_comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:paddingBottom="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="2dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@color/diliver_topic" />
+</LinearLayout>

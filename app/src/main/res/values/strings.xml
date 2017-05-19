@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">校园资讯</string>
+
+    <!--login-->
+    <string name="skip">跳过</string>
+    <string name="hint_login_name">请输入你的账号</string>
+    <string name="hint_login_password">请输入密码</string>
+    <string name="btn_login">登录</string>
+    <string name="btn_register">注册</string>
+
+    <!--register code-->
+    <string name="hint_register_name">请输入新建账号名</string>
+    <string name="hint_register_password">请输入6位及以上的字符</string>
+    <string name="register_next">下一步</string>
+
+    <!--register-->
+    <string name="hint_register_nickname">请输入你的昵称</string>
+    <string name="hint_register_realname">请输入你的真实姓名</string>
+    <string name="hint_department">请选择你所在系</string>
+    <string name="hint_class">请选择你所在班级</string>
+    <string name="hint_student_id">请输入你的学号</string>
+    <string name="hint_nation">请选择你所属民族</string>
+    <string name="hint_birthday">请选择你的出生日期</string>
+    <string name="hint_address">请输入你的家庭住址</string>
+    <string name="hint_hobby">请输入你的兴趣爱好</string>
+    <string name="submit_register">确认</string>
+
+    <!--my-->
+    <string name="my_information">我的个人信息</string>
+    <string name="my_modify_psw">修改密码</string>
+    <string name="exit">退出登录</string>
+    <string name="dialog_my_motto">我的座右铭</string>
+    <string name="dialog_modify_my_motto">修改我的座右铭</string>
+    <string name="save">保存</string>
+    <string name="cancle">取消</string>
+    <string name="modify">编辑</string>
+    <string name="my_psw">我的旧密码：</string>
+    <string name="sure_new_psw">确认新密码：</string>
+    <string name="hint_my_psw">请输入旧密码</string>
+    <string name="hint_new_psw">请输入6位及以上的新密码</string>
+    <string name="hint_sure_new_psw">请再次输入新密码</string>
+    <string name="sure">确定</string>
+
+    <!--main-->
+    <string name="bottom_tap_chat">会话中心</string>
+    <string name="bottom_tap_topic">话题</string>
+    <string name="bottom_tap_message">消息中心</string>
+
+    <!--message-->
+    <string name="important_message">重要消息</string>
+    <string name="explain_no_important_message">目前暂无未查看的重要信息</string>
+    <string name="not_important_message">普通消息</string>
+    <string name="explain_no_not_important_message">目前暂无未查看的普通消息</string>
+    <string name="my_message">我发送的消息</string>
+    <string name="explain_no_my_message">我还没有发送消息</string>
+    <string name="accept_group">接收群体：</string>
+    <string name="accept_time">接收时间：</string>
+    <string name="see_students_number">已查看的学生数：</string>
+    <string name="not_see_students_number">未查看的学生数：</string>
+    <string name="phoneNumber">电话号码：</string>
+    <string name="call">打电话</string>
+    <string name="send_SMS">发短信</string>
+
+    <!--topic-->
+    <string name="hint_txt_new_topic">说点什么吧。。。。</string>
+    <string name="hint_txt_new_comment">说点什么吧。。。。</string>
+    <string name="select_show_now_address">选择显示地址</string>
+    <string name="number_of_thumb">点赞数:</string>
+    <string name="reply">回复</string>
+    <string name="send">发送</string>
+</resources>
