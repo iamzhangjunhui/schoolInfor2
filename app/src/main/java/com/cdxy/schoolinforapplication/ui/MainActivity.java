@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.cdxy.schoolinforapplication.HttpUrl;
 import com.cdxy.schoolinforapplication.R;
+import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.ScreenManager;
 import com.cdxy.schoolinforapplication.model.ReturnEntity;
 import com.cdxy.schoolinforapplication.model.UserInfor.UserInforEntity;
@@ -46,7 +47,6 @@ import com.cdxy.schoolinforapplication.util.Constant;
 import com.cdxy.schoolinforapplication.util.GetUserInfor;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
 import com.cdxy.schoolinforapplication.util.SharedPreferenceManager;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -191,9 +191,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 txtMyClazz.setText(clazz);
             }
             String motto = userInfor.getZuoyouming();
-            if (TextUtils.equals(motto, "null")||TextUtils.isEmpty(motto)) {
+            if (TextUtils.equals(motto, "null") || TextUtils.isEmpty(motto)) {
                 txtMyMotto.setText("我的座右铭");
-            }else {
+            } else {
                 txtMyMotto.setText(motto);
             }
             String department = userInfor.getXibie();
@@ -475,15 +475,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-                ReturnEntity returnEntity = (new Gson()).fromJson(s, ReturnEntity.class);
-                if (returnEntity.getCode() == 1) {
-                    GetUserInfor.getMyInfor(MainActivity.this, userid);
-                    txtMyMotto.setText(zuoyouming);
-
+                ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
+                if (returnEntity != null) {
+                    if (returnEntity.getCode() == 1) {
+                        GetUserInfor.getMyInfor(MainActivity.this, userid);
+                        txtMyMotto.setText(zuoyouming);
+                    } else {
+                        toast(returnEntity.getMsg() + "");
+                    }
+                } else {
+                    toast("修改座右铭出错");
                 }
             }
         });
-
     }
 
     @Override
@@ -585,29 +589,34 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void updateMyIcon(String path) {
-        OkHttpClient okHttpClient = HttpUtil.getClient();
-        MediaType mediaType = MediaType.parse("image/png");
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-        builder.setType(MultipartBody.FORM);
-        final File file = new File(path);
-        if (file != null) {
-            builder.addFormDataPart("file", file.getName(), MultipartBody.create(mediaType, file));
-        }
-        builder.addFormDataPart("userid", userInfor.getUserid());
-        MultipartBody multipartBody = builder.build();
-        Request request = new Request.Builder().url(HttpUrl.UPDATE_MY_HEAD_PORTRAIT).post(multipartBody).build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+    private void updateMyIcon(final String path) {
+        Observable.create(new Observable.OnSubscribe<String>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
+            public void call(Subscriber<? super String> subscriber) {
+                OkHttpClient okHttpClient = HttpUtil.getClient();
+                MediaType mediaType = MediaType.parse("image/png");
+                MultipartBody.Builder builder = new MultipartBody.Builder();
+                builder.setType(MultipartBody.FORM);
+                final File file = new File(path);
+                if (file != null) {
+                    builder.addFormDataPart("file", file.getName(), MultipartBody.create(mediaType, file));
+                }
+                builder.addFormDataPart("userid", userInfor.getUserid());
+                MultipartBody multipartBody = builder.build();
+                Request request = new Request.Builder().url(HttpUrl.UPDATE_MY_HEAD_PORTRAIT).post(multipartBody).build();
+                try {
+                    Response response = okHttpClient.newCall(request).execute();
+                    subscriber.onNext(response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Observable.just(file).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<File>() {
-                    @Override
-                    public void call(File file) {
+            public void call(String s) {
+                ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
+                if (returnEntity != null) {
+                    if (returnEntity.getCode() == 1) {
                         if (file != null) {
                             GetUserInfor.getMyInfor(MainActivity.this, userInfor.getUserid());
                             Glide.with(MainActivity.this).load(file).placeholder(R.drawable.loading).bitmapTransform(new CropCircleTransformation(MainActivity.this)).into(imgMyIcon);
@@ -616,8 +625,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             Glide.with(MainActivity.this).load(R.drawable.students).placeholder(R.drawable.loading).bitmapTransform(new CropCircleTransformation(MainActivity.this)).into(imgMyIcon);
                             Glide.with(MainActivity.this).load(R.drawable.students).placeholder(R.drawable.loading).bitmapTransform(new CropCircleTransformation(MainActivity.this)).into(imgIcon);
                         }
+                    } else {
+                        toast(returnEntity.getMsg() + "");
                     }
-                });
+                } else {
+                    toast("上传头像出错");
+                }
+
             }
         });
     }

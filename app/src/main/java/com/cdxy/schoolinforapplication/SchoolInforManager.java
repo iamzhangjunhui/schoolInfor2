@@ -17,6 +17,7 @@ import com.alibaba.wxlib.util.SysUtil;
 import com.cdxy.schoolinforapplication.ui.chat.ConversationListOperationCustomSample;
 import com.cdxy.schoolinforapplication.ui.chat.ConversationListUICustomSample;
 import com.cdxy.schoolinforapplication.util.SharedPreferenceManager;
+import com.google.gson.Gson;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,6 +31,7 @@ public class SchoolInforManager extends MultiDexApplication {
     private static Context context;
     private static SchoolInforManager application;
     public static String appKay = "23666123";
+    public  static Gson gson=new Gson();
     public static SchoolInforManager getInstance(){
     if (application==null){
         application=new SchoolInforManager();

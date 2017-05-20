@@ -17,14 +17,15 @@ import android.widget.TextView;
 
 import com.cdxy.schoolinforapplication.HttpUrl;
 import com.cdxy.schoolinforapplication.R;
+import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.ScreenManager;
+import com.cdxy.schoolinforapplication.model.ReturnEntity;
 import com.cdxy.schoolinforapplication.model.UserInfor.UserInforEntity;
 import com.cdxy.schoolinforapplication.ui.ChooseInfor.ChooseInforActivity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
 import com.cdxy.schoolinforapplication.util.Constant;
 import com.cdxy.schoolinforapplication.util.GetUserInfor;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -37,8 +38,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class ModifyMyInforActivity extends BaseActivity implements View.OnClickListener {
 
@@ -138,11 +141,11 @@ public class ModifyMyInforActivity extends BaseActivity implements View.OnClickL
                 } else if (boy.isChecked()) {
                     sex = "男";
                 }
-                String oldDepartment=userInfor.getXibie();
-                String nowDepartment=txtDepartment.getText().toString();
-                String oldClazz=userInfor.getBanji();
-                String nowClazz=txtClass.getText().toString();
-                if ((!TextUtils.equals(oldDepartment,nowDepartment))&&TextUtils.equals(oldClazz,nowClazz)){
+                String oldDepartment = userInfor.getXibie();
+                String nowDepartment = txtDepartment.getText().toString();
+                String oldClazz = userInfor.getBanji();
+                String nowClazz = txtClass.getText().toString();
+                if ((!TextUtils.equals(oldDepartment, nowDepartment)) && TextUtils.equals(oldClazz, nowClazz)) {
                     toast("你修改了系，请将班级也修改一下");
                     return;
                 }
@@ -150,8 +153,7 @@ public class ModifyMyInforActivity extends BaseActivity implements View.OnClickL
                         txtDepartment.getText().toString(), txtClass.getText().toString(), edtStudentId.getText().toString(),
                         sex, txtBirthday.getText().toString(), txtNation.getText().toString(), edtAddress.getText().toString(),
                         edtHobby.getText().toString());
-                Gson gson = new Gson();
-                String userInforJson = gson.toJson(userInforEntity);
+                String userInforJson = SchoolInforManager.gson.toJson(userInforEntity);
                 updateUserInfor(userInforJson, userInfor.getUserid());
                 break;
             default:
@@ -185,43 +187,43 @@ public class ModifyMyInforActivity extends BaseActivity implements View.OnClickL
     private void setData() {
         if (userInfor != null) {
             if (!TextUtils.isEmpty(userInfor.getUserid())) {
-                String nickName=userInfor.getNicheng();
-                if (!nickName.equals("null")){
+                String nickName = userInfor.getNicheng();
+                if (!nickName.equals("null")) {
                     edtNickname.setText(nickName);
                 }
-                String name=userInfor.getXingming();
-                if (!name.equals("null")){
+                String name = userInfor.getXingming();
+                if (!name.equals("null")) {
                     edtRealname.setText(name);
                 }
-                String department=userInfor.getXibie();
-                if (!department.equals("null")){
+                String department = userInfor.getXibie();
+                if (!department.equals("null")) {
                     txtDepartment.setText(department);
                 }
-                String clazz=userInfor.getBanji();
-                if (!clazz.equals("null")){
+                String clazz = userInfor.getBanji();
+                if (!clazz.equals("null")) {
                     txtClass.setText(clazz);
                 }
-                String studentid=userInfor.getXuehao();
-                if (!studentid.equals("null")){
+                String studentid = userInfor.getXuehao();
+                if (!studentid.equals("null")) {
                     edtRealname.setText(studentid);
                 }
-                String birthday=userInfor.getShengri();
-                if (!birthday.equals("null")){
+                String birthday = userInfor.getShengri();
+                if (!birthday.equals("null")) {
                     txtBirthday.setText(birthday);
                 }
-                String nation=userInfor.getMinzu();
-                if (!nation.equals("null")){
+                String nation = userInfor.getMinzu();
+                if (!nation.equals("null")) {
                     txtNation.setText(nation);
                 }
-                String address=userInfor.getJia();
-                if (!address.equals("null")){
+                String address = userInfor.getJia();
+                if (!address.equals("null")) {
                     edtAddress.setText(address);
                 }
-                String hobby=userInfor.getXingqu();
-                if (!hobby.equals("null")){
+                String hobby = userInfor.getXingqu();
+                if (!hobby.equals("null")) {
                     edtHobby.setText(hobby);
                 }
-                String sex=userInfor.getXingbie();
+                String sex = userInfor.getXingbie();
                 if (sex.equals("女")) {
                     rgSex.check(R.id.girl);
                 } else if (sex.equals("男")) {
@@ -232,35 +234,37 @@ public class ModifyMyInforActivity extends BaseActivity implements View.OnClickL
     }
 
     public void updateUserInfor(final String userInforJsonString, final String userid) {
-       progress.setVisibility(View.VISIBLE);
-        OkHttpClient okHttpClient = HttpUtil.getClient();
-        final Request request = new Request.Builder().url(HttpUrl.UPDATE_MY_INFOR + "?userInfor=" + userInforJsonString).get().build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        progress.setVisibility(View.VISIBLE);
+        Observable.create(new Observable.OnSubscribe<String>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                Observable.just("修改个人信息失败，请检查一下网络是否连接").observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        progress.setVisibility(View.GONE);
-                        toast(s);
-                    }
-                });
+            public void call(Subscriber<? super String> subscriber) {
+                OkHttpClient okHttpClient = HttpUtil.getClient();
+                final Request request = new Request.Builder().url(HttpUrl.UPDATE_MY_INFOR + "?userInfor=" + userInforJsonString).get().build();
+                try {
+                    Response response = okHttpClient.newCall(request).execute();
+                    subscriber.onNext(response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Observable.just("").observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        progress.setVisibility(View.GONE);
+            public void call(String s) {
+                progress.setVisibility(View.GONE);
+                ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
+                if (returnEntity != null) {
+                    if (returnEntity.getCode() == 1) {
                         GetUserInfor.getMyInfor(ModifyMyInforActivity.this, userid);
-                        Intent intent=new Intent();
-                        intent.putExtra("userInforJsonString",userInforJsonString);
-                        setResult(RESULT_OK,intent);
+                        Intent intent = new Intent();
+                        intent.putExtra("userInforJsonString", userInforJsonString);
+                        setResult(RESULT_OK, intent);
                         finish();
+                    } else {
+                        toast(returnEntity.getMsg() + "");
                     }
-                });
+                } else {
+                    toast("修改个人信息出错");
+                }
 
             }
         });

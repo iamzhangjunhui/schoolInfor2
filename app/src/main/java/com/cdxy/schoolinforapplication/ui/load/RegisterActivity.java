@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.cdxy.schoolinforapplication.HttpUrl;
 import com.cdxy.schoolinforapplication.R;
+import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.ScreenManager;
 import com.cdxy.schoolinforapplication.model.ReturnEntity;
 import com.cdxy.schoolinforapplication.model.UserInfor.UserInforEntity;
@@ -24,7 +25,6 @@ import com.cdxy.schoolinforapplication.ui.ChooseInfor.ChooseInforActivity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
 import com.cdxy.schoolinforapplication.util.Constant;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -195,8 +195,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 }
                 UserInforEntity userInforEntity = new UserInforEntity(mRegisterName, mNickName, mName, mDepartment, mClazz,
                         mStudentId, mSex, mBirthday, mNation, mAddress, mHobby, identity);
-                Gson gson = new Gson();
-                String json = gson.toJson(userInforEntity);
+                String json = SchoolInforManager.gson.toJson(userInforEntity);
                 updateUserInfor(json);
             default:
                 break;
@@ -248,8 +247,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void call(String s) {
                 progress.setVisibility(View.GONE);
-                Gson gson = new Gson();
-                ReturnEntity returnEntity = gson.fromJson(s, ReturnEntity.class);
+                ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
                 if (returnEntity != null) {
                     if (returnEntity.getCode() == 1) {
                         ScreenManager.getScreenManager().appExit(RegisterActivity.this);

@@ -12,20 +12,17 @@ import android.widget.TextView;
 
 import com.cdxy.schoolinforapplication.HttpUrl;
 import com.cdxy.schoolinforapplication.R;
+import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.ScreenManager;
 import com.cdxy.schoolinforapplication.model.ReturnEntity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
 import com.cdxy.schoolinforapplication.util.Constant;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
 import com.cdxy.schoolinforapplication.util.NumberCheckUtil;
-import com.google.gson.Gson;
-
 import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -33,7 +30,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class RegisterCodeActivity extends BaseActivity implements View.OnClickListener {
@@ -131,8 +127,7 @@ public class RegisterCodeActivity extends BaseActivity implements View.OnClickLi
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-                Gson gson = new Gson();
-                ReturnEntity returnEntity = gson.fromJson(s, ReturnEntity.class);
+                ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
                 if (returnEntity != null) {
                     if (returnEntity.getCode() == 1) {
                         Intent intent = new Intent(RegisterCodeActivity.this, RegisterActivity.class);

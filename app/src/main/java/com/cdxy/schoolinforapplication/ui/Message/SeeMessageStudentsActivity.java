@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.cdxy.schoolinforapplication.HttpUrl;
 import com.cdxy.schoolinforapplication.R;
+import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.ScreenManager;
 import com.cdxy.schoolinforapplication.adapter.message.SeeMessageStudentAdapter;
 import com.cdxy.schoolinforapplication.model.QuerenOrNotReturnEntity;
@@ -19,8 +20,6 @@ import com.cdxy.schoolinforapplication.model.message.SeeMeaaseStudentEntity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
 import com.cdxy.schoolinforapplication.ui.widget.ScrollListView;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,9 +138,8 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
         }).subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-                Gson gson = new Gson();
                 int messageNumber;
-                QuerenOrNotReturnEntity<List<SeeMeaaseStudentEntity>> returnEntity = gson.fromJson(s, QuerenOrNotReturnEntity.class);
+                QuerenOrNotReturnEntity<List<SeeMeaaseStudentEntity>> returnEntity = SchoolInforManager.gson.fromJson(s, QuerenOrNotReturnEntity.class);
                 if (returnEntity.getCode() == 1) {
                     List<SeeMeaaseStudentEntity> seeMeaaseStudentEntityList = returnEntity.getData();
 //                        returnList.addAll(returnTopicList);

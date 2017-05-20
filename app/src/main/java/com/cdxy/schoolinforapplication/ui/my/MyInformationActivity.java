@@ -9,12 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cdxy.schoolinforapplication.R;
+import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.ScreenManager;
 import com.cdxy.schoolinforapplication.model.UserInfor.UserInforEntity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
 import com.cdxy.schoolinforapplication.util.GetUserInfor;
 import com.cdxy.schoolinforapplication.util.SharedPreferenceManager;
-import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +52,6 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
     LinearLayout activityMyInformation;
     private UserInforEntity userInfor;
     private String userId;
-    private Gson gson;
     private static String id;
 
     @Override
@@ -68,7 +67,6 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
     public void init() {
         txtTitle.setText("我的个人信息");
         txtRight.setVisibility(View.VISIBLE);
-        gson = new Gson();
         userId = SharedPreferenceManager.instance(MyInformationActivity.this).getUserInfor().getUserid();
         id = userId;
         GetUserInfor.getMyInfor(MyInformationActivity.this, userId);
@@ -148,7 +146,7 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
         if (resultCode == RESULT_OK&&requestCode==0) {
             GetUserInfor.getMyInfor(MyInformationActivity.this, userId);
             String resultJson = data.getStringExtra("userInforJsonString");
-            UserInforEntity userInforEntity=(new Gson()).fromJson(resultJson,UserInforEntity.class);
+            UserInforEntity userInforEntity= SchoolInforManager.gson.fromJson(resultJson,UserInforEntity.class);
             setData(userInforEntity);
         }
     }

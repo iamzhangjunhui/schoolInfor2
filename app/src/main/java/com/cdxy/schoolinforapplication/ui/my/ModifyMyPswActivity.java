@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.cdxy.schoolinforapplication.HttpUrl;
 import com.cdxy.schoolinforapplication.R;
+import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.ScreenManager;
+import com.cdxy.schoolinforapplication.model.ReturnEntity;
 import com.cdxy.schoolinforapplication.model.UserInfor.UserInforEntity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
@@ -27,8 +29,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class ModifyMyPswActivity extends BaseActivity implements View.OnClickListener {
 
@@ -90,8 +94,8 @@ public class ModifyMyPswActivity extends BaseActivity implements View.OnClickLis
                     toast("请再次输入一下新密码");
                     return;
                 }
-                if (TextUtils.equals(newPassword, new2Password)) {
-                toast("你设置的新密码与旧密码一样，请重新设置");
+                if (TextUtils.equals(oldPassword, newPassword)) {
+                    toast("你设置的新密码与旧密码一样，请重新设置");
                     edtNewPsw.setText("");
                     edtSureNewPsw.setText("");
                     return;
@@ -106,33 +110,34 @@ public class ModifyMyPswActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void modifyPassword(String userid, String oldPassword, final String newPassword) {
+    private void modifyPassword(final String userid, final String oldPassword, final String newPassword) {
         progress.setVisibility(View.VISIBLE);
-        OkHttpClient okHttpClient = HttpUtil.getClient();
-        Request request = new Request.Builder().url(HttpUrl.UPDATE_PASSWORD + "?userid=" + userid + "&&oldPassword=" + oldPassword + "&&newPassword=" + oldPassword).get().build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        Observable.create(new Observable.OnSubscribe<String>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                Observable.just("修改密码失败，请检查一下网络是否连接").observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        progress.setVisibility(View.GONE);
-                        toast(s);
-                    }
-                });
+            public void call(Subscriber<? super String> subscriber) {
+                OkHttpClient okHttpClient = HttpUtil.getClient();
+                Request request = new Request.Builder().url(HttpUrl.UPDATE_PASSWORD + "?userid=" + userid + "&&oldPassword=" + oldPassword + "&&newPassword=" + oldPassword).get().build();
+                try {
+                    Response response = okHttpClient.newCall(request).execute();
+                    subscriber.onNext(response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Observable.just("").observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        progress.setVisibility(View.GONE);
+            public void call(String s) {
+                progress.setVisibility(View.GONE);
+                ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
+                if (returnEntity != null) {
+                    if (returnEntity.getCode() == 1) {
                         SharedPreferenceManager.instance(ModifyMyPswActivity.this).setMyPassword(newPassword);
                         finish();
+                    } else {
+                        toast(returnEntity.getMsg() + "");
                     }
-                });
+                }
+
             }
         });
     }

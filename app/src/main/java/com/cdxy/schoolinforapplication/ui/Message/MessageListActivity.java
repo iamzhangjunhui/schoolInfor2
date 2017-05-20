@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.cdxy.schoolinforapplication.HttpUrl;
 import com.cdxy.schoolinforapplication.R;
+import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.ScreenManager;
 import com.cdxy.schoolinforapplication.adapter.message.MessageListAdapter;
 import com.cdxy.schoolinforapplication.model.MessageReturnEntity;
@@ -22,7 +23,6 @@ import com.cdxy.schoolinforapplication.ui.my.MyInformationActivity;
 import com.cdxy.schoolinforapplication.ui.widget.ScrollListView;
 import com.cdxy.schoolinforapplication.util.Constant;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -131,10 +131,9 @@ public class MessageListActivity extends BaseActivity implements View.OnClickLis
         }).subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-                Gson gson = new Gson();
                 int messageNumber;
                 Type listType = new TypeToken<List<MessageReturnEntity>>() {}.getType();
-                MessageReturnEntity<List<MessageEntity>> returnEntity = gson.fromJson(s, MessageReturnEntity.class);
+                MessageReturnEntity<List<MessageEntity>> returnEntity = SchoolInforManager.gson.fromJson(s, MessageReturnEntity.class);
                 List<MessageEntity> entityList = new ArrayList<>();
 //                if (returnEntity != null) {
 //                    returnEntity = gson.fromJson(s, new TypeToken<ReturnEntity<List<ReturnTopicEntity>>>() {

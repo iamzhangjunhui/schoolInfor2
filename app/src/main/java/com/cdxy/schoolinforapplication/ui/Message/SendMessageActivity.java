@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.cdxy.schoolinforapplication.HttpUrl;
 import com.cdxy.schoolinforapplication.R;
+import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.adapter.topic.ParentAdapter;
 import com.cdxy.schoolinforapplication.model.SendMessageEntity;
 import com.cdxy.schoolinforapplication.model.tree.ChildEntity;
@@ -24,7 +25,6 @@ import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
 import com.cdxy.schoolinforapplication.ui.my.MyInformationActivity;
 import com.cdxy.schoolinforapplication.ui.widget.ScollerExpandableListView;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -228,8 +228,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
                 MediaType JSON = MediaType.parse("application/json; charset=utf-8");
                 OkHttpClient okHttpClient = HttpUtil.getClient();
                 SendMessageEntity sendMessageEntity = new SendMessageEntity(title, content, messageTye, sendTo, MyInformationActivity.getUserid(), isSelectAll);
-                Gson gson = new Gson();
-                String json = gson.toJson(sendMessageEntity);
+                String json = SchoolInforManager.gson.toJson(sendMessageEntity);
                 RequestBody formBody = RequestBody.create(JSON, json);
                 Request request = new Request.Builder().url(HttpUrl.SEND_MESSAGE)
                         .post(formBody).build();

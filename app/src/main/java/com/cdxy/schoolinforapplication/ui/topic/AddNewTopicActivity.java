@@ -30,6 +30,7 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.cdxy.schoolinforapplication.HttpUrl;
 import com.cdxy.schoolinforapplication.R;
+import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.ScreenManager;
 import com.cdxy.schoolinforapplication.adapter.Text1ListAdapter;
 import com.cdxy.schoolinforapplication.adapter.topic.TopicPhotosAdapter;
@@ -43,7 +44,6 @@ import com.cdxy.schoolinforapplication.ui.widget.ScrollListView;
 import com.cdxy.schoolinforapplication.util.Constant;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
 import com.cdxy.schoolinforapplication.util.SharedPreferenceManager;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -69,7 +69,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class AddNewTopicActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
@@ -431,7 +430,16 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
         }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-                addTopic();
+                ReturnEntity returnEntity= SchoolInforManager.gson.fromJson(s,ReturnEntity.class);
+                if (returnEntity!=null){
+                    if (returnEntity.getCode()==1){
+                        addTopic();
+                    }else {
+                        toast(returnEntity.getMsg()+"");
+                    }
+                }else {
+                    toast("上传图片失败");
+                }
             }
         });
 
@@ -453,8 +461,7 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
                 return;
             } else {
                 AddTopicEntity addTopicEntity = new AddTopicEntity(topicid, authorid, nickName, create_time, content);
-                final Gson gson = new Gson();
-                final String topicjson = gson.toJson(addTopicEntity);
+                final String topicjson = SchoolInforManager.gson.toJson(addTopicEntity);
                 Observable.create(new Observable.OnSubscribe<String>() {
                     @Override
                     public void call(Subscriber<? super String> subscriber) {
@@ -470,14 +477,15 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
                 }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
                     @Override
                     public void call(String s) {
-                        ReturnEntity returnEntity = gson.fromJson(s, ReturnEntity.class);
+                        ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
                         if (returnEntity != null) {
                             if (returnEntity.getCode() == 1) {
-                                toast(returnEntity.getMsg());
                                 finish();
                             } else {
                                 toast(returnEntity.getMsg());
                             }
+                        }else {
+                            toast("创建话题出错");
                         }
                         progress.setVisibility(View.GONE);
                     }

@@ -61,7 +61,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     ProgressBar progress;
     private String loginName;
     private ChooseWayDialog chooseIdentityDialog;
-    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +79,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         edtLoginName.setText(loginName);
         //如果本地有登录信息就实现自动登录
         autoLogin();
-        gson = new Gson();
     }
 
     @Override
@@ -147,9 +145,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-                ReturnEntity<LoginReturnEntity> returnEntity = gson.fromJson(s, ReturnEntity.class);
+                ReturnEntity<LoginReturnEntity> returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
                 if (returnEntity != null) {
-                    returnEntity = gson.fromJson(s, new TypeToken<ReturnEntity<LoginReturnEntity>>() {
+                    returnEntity = SchoolInforManager.gson.fromJson(s, new TypeToken<ReturnEntity<LoginReturnEntity>>() {
                     }.getType());
                     //如果登陆成功
                     if (returnEntity.getCode() == 1) {

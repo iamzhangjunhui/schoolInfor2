@@ -65,7 +65,6 @@ public class TopicAdapter extends BaseAdapter {
     private LinearLayout layoutAddComment;
     private EditText edtAddComment;
     private TextView txtSendNewComment;
-    private Gson gson = new Gson();
     ViewHolder viewHolder;
     UserInforEntity userInfor;
     String myNikename;
@@ -253,7 +252,7 @@ public class TopicAdapter extends BaseAdapter {
                         String receiverNickname = entity.getNickName();
                         if (!TextUtils.isEmpty(myNikename) && (!TextUtils.isEmpty(receiverNickname))) {
                             ReturnCommentEntity commentEntity = new ReturnCommentEntity(topicid, myNikename, receiverNickname, newCommentcontent);
-                            String json = gson.toJson(commentEntity);
+                            String json = SchoolInforManager.gson.toJson(commentEntity);
                             sendComment(json, entity, commentEntity);
                         }
                     }
@@ -266,7 +265,7 @@ public class TopicAdapter extends BaseAdapter {
                 if (!TextUtils.isEmpty(myNikename) && (!TextUtils.isEmpty(myUserid))) {
                     String topicid = entity.getTopicid();
                     ThumbEntity thumbEntity = new ThumbEntity(topicid, myUserid, myNikename);
-                    String jsonString = gson.toJson(thumbEntity);
+                    String jsonString = SchoolInforManager.gson.toJson(thumbEntity);
                     thumb(jsonString, entity, i);
                 } else {
                     Toast.makeText(activity, "你还没设置昵称，快去设置吧", Toast.LENGTH_SHORT).show();
@@ -299,7 +298,7 @@ public class TopicAdapter extends BaseAdapter {
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.newThread()).subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-                ReturnEntity returnEntity = gson.fromJson(s, ReturnEntity.class);
+                ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
                 if (returnEntity != null) {
                     if (returnEntity.getCode() == 1) {
                         if (topicEntity.isiHasThumb()) {
@@ -336,7 +335,7 @@ public class TopicAdapter extends BaseAdapter {
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.newThread()).subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-                ReturnEntity returnEntity = gson.fromJson(s, ReturnEntity.class);
+                ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
                 if (returnEntity.getCode() == 1) {
                     topicEntity.getComments().add(commentEntity);
                     TopicAdapter.this.notifyDataSetChanged();
@@ -397,12 +396,14 @@ public class TopicAdapter extends BaseAdapter {
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.newThread()).subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-                ReturnEntity returnEntity = gson.fromJson(s, ReturnEntity.class);
-                if (returnEntity.getCode() == 1) {
-                    list.remove(position);
-                    TopicAdapter.this.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(activity, returnEntity.getMsg(), Toast.LENGTH_SHORT).show();
+                ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
+                if (returnEntity!=null) {
+                    if (returnEntity.getCode() == 1) {
+                        list.remove(position);
+                        TopicAdapter.this.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(activity, returnEntity.getMsg(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
