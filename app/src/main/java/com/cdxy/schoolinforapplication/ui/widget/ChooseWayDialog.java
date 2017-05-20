@@ -51,14 +51,18 @@ public class ChooseWayDialog extends Dialog implements View.OnClickListener {
         setContentView(R.layout.dialog_choose_way);
         ButterKnife.bind(this);
         WindowManager.LayoutParams params=getWindow().getAttributes();
-        params.width=activity.getWindowManager().getDefaultDisplay().getWidth()-40;
+        params.width=activity.getWindowManager().getDefaultDisplay().getWidth()-100;
         getWindow().setAttributes(params);
         txtWay1.setOnClickListener(this);
         txtWay2.setOnClickListener(this);
         if (type== Constant.CHOOSE_WAY_DIALOG_TYPE_GET_PHOTO){
             txtWay1.setText("拍照");
             txtWay2.setText("从相册中获取");
-        }else {
+        }else if (type==Constant.CHOOSE_WAY_DIALOG_TYPE_CHOOSE_MY_IDENTITY){
+            txtWay1.setText("我是老师");
+            txtWay2.setText("我是学生");
+        }
+        else {
             txtWay1.setText("打电话");
             txtWay2.setText("发短信");
         }

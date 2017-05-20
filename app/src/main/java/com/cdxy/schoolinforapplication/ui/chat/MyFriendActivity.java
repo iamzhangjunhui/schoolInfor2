@@ -56,59 +56,6 @@ public class MyFriendActivity extends BaseActivity implements View.OnClickListen
         ButterKnife.bind(this);
         ScreenManager.getScreenManager().pushActivity(this);
         init();
-
-        //添加好友
-        IWxCallback addFriendCallback = new IWxCallback() {
-
-            @Override
-            public void onSuccess(Object... result) {
-                toast("请求添加好友成功");
-            }
-
-            @Override
-            public void onProgress(int progress) {
-
-            }
-
-            @Override
-            public void onError(int code, String info) {
-            }
-        };
-        LoginActivity.iywContactService.addContact("suhang", SchoolInforManager.appKay, "苏杭", "你好，我是王振南", addFriendCallback);
-
-        //获取是否在线
-//        final IWxCallback iWxCallbackIsOnline = new IWxCallback() {
-//            //已经在UI线程
-//            @Override
-//            public void onSuccess(Object... result) {
-//                Map<String, IYWOnlineContact> contacts = (Map<String, IYWOnlineContact>) result[0];
-//                if (contacts != null) {
-//                    int i=0;
-//                    for (Map.Entry<String, IYWOnlineContact> entry : contacts
-//                            .entrySet()) {
-//                        //用户userid
-//                        String uid = entry.getKey();
-//                        IYWOnlineContact ct = entry
-//                                .getValue();
-//                        //用户在线状态
-//                        boolean online=ct.getOnlineStatus()==0?true:false;
-//                        //...
-//                        list.get(i).setOnline(online);
-//                        i++;
-//                    }
-//                    adapter.notifyDataSetChanged();
-//                }
-//            }
-//            @Override
-//            public void onError(int code,String info) {
-//
-//            }
-//
-//            @Override
-//            public void onProgress(int progress) {
-//
-//            }
-//        };
         IWxCallback callback = new IWxCallback() {
             @Override
             public void onSuccess(Object... result) {

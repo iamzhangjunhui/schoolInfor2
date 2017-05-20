@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 
 import com.alibaba.mobileim.IYWLoginService;
 import com.alibaba.mobileim.YWAPI;
@@ -21,26 +22,21 @@ import com.cdxy.schoolinforapplication.ScreenManager;
 import com.cdxy.schoolinforapplication.model.LoginReturnEntity;
 import com.cdxy.schoolinforapplication.model.ReturnEntity;
 import com.cdxy.schoolinforapplication.model.UserInfor.UserInforEntity;
-import com.cdxy.schoolinforapplication.model.topic.TopicEntity;
 import com.cdxy.schoolinforapplication.ui.MainActivity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
-import com.cdxy.schoolinforapplication.ui.widget.ChooseIdentityTypeDialog;
+import com.cdxy.schoolinforapplication.ui.widget.ChooseWayDialog;
+import com.cdxy.schoolinforapplication.util.Constant;
 import com.cdxy.schoolinforapplication.util.GetUserInfor;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
+import com.cdxy.schoolinforapplication.util.NumberCheckUtil;
 import com.cdxy.schoolinforapplication.util.SharedPreferenceManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.io.IOException;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -48,7 +44,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -65,7 +60,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @BindView(R.id.progress)
     ProgressBar progress;
     private String loginName;
-    private ChooseIdentityTypeDialog chooseIdentityTypeDialog;
+    private ChooseWayDialog chooseIdentityDialog;
     private Gson gson;
 
     @Override
@@ -92,28 +87,37 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_register:
-                chooseIdentityTypeDialog = new ChooseIdentityTypeDialog(LoginActivity.this, R.style.MyDialog, new ChooseIdentityTypeDialog.ChooseIdentityTypeDialogListener() {
+                chooseIdentityDialog = new ChooseWayDialog(LoginActivity.this, R.style.MyDialog, new ChooseWayDialog.ChooseWayDialogListener() {
                     @Override
                     public void onClick(View view) {
                         switch (view.getId()) {
-                            case R.id.btn_teacher:
-                                chooseIdentityTypeDialog.dismiss();
-                                break;
-                            case R.id.btn_student:
+                            case R.id.txt_way1:
                                 Intent intent = new Intent(LoginActivity.this, RegisterCodeActivity.class);
+                                intent.putExtra(Constant.IDENTITY, "teacher");
                                 startActivity(intent);
-                                chooseIdentityTypeDialog.dismiss();
+                                chooseIdentityDialog.dismiss();
+                                break;
+                            case R.id.txt_way2:
+                                intent = new Intent(LoginActivity.this, RegisterCodeActivity.class);
+                                intent.putExtra(Constant.IDENTITY, "student");
+                                startActivity(intent);
+                                chooseIdentityDialog.dismiss();
                                 break;
                         }
+
                     }
-                }, LoginActivity.this);
-                chooseIdentityTypeDialog.show();
+                }, LoginActivity.this, Constant.CHOOSE_WAY_DIALOG_TYPE_CHOOSE_MY_IDENTITY);
+                chooseIdentityDialog.show();
                 break;
             case R.id.btn_login:
                 loginName = edtLoginName.getText().toString();
                 String loginPassword = edtLoginPassword.getText().toString();
                 if (TextUtils.isEmpty(loginName)) {
                     toast("请输入账号");
+                    return;
+                }
+                if (!NumberCheckUtil.isMoibleNumber(loginName)) {
+                    toast("输入的手机号格式不对");
                     return;
                 }
                 if (TextUtils.isEmpty(loginPassword)) {
@@ -126,7 +130,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    //苏杭    登陆接口
     public void login(final String userid, final String password) {
         progress.setVisibility(View.VISIBLE);
         Observable.create(new Observable.OnSubscribe<String>() {
@@ -155,7 +158,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         aliLogin(loginReturnEntity.getUserid(), loginReturnEntity.getPassword());
                         GetUserInfor.getMyInfor(LoginActivity.this, loginReturnEntity.getUserid());
                     } else {
-                        toast("登录出现异常");
+                        toast(returnEntity.getMsg());
+                        progress.setVisibility(View.GONE);
                     }
 
                 }

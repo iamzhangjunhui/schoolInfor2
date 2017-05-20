@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.cdxy.schoolinforapplication.HttpUrl;
 import com.cdxy.schoolinforapplication.R;
 import com.cdxy.schoolinforapplication.ScreenManager;
+import com.cdxy.schoolinforapplication.model.ReturnEntity;
 import com.cdxy.schoolinforapplication.model.UserInfor.UserInforEntity;
 import com.cdxy.schoolinforapplication.ui.ChooseInfor.ChooseInforActivity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
@@ -30,14 +31,14 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 
@@ -77,6 +78,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     LinearLayout activityRegister;
     @BindView(R.id.progress)
     ProgressBar progress;
+    @BindView(R.id.ly_department)
+    LinearLayout lyDepartment;
+    @BindView(R.id.ly_class)
+    LinearLayout lyClass;
+    @BindView(R.id.ly_student_id)
+    LinearLayout lyStudentId;
+    private String identity;
     private String mRegisterName;
     private String mDepartment;
     private String mClazz;
@@ -96,13 +104,20 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         ButterKnife.bind(this);
         ScreenManager.getScreenManager().pushActivity(this);
         init();
-        Intent intent = getIntent();
-        mRegisterName = intent.getStringExtra("registerName");
+
     }
 
     @Override
     public void init() {
         txtTitle.setText("信息填写");
+        Intent intent = getIntent();
+        mRegisterName = intent.getStringExtra("registerName");
+        identity = intent.getStringExtra(Constant.IDENTITY);
+        if (TextUtils.equals(identity, "teacher")) {
+            lyDepartment.setVisibility(View.GONE);
+            lyClass.setVisibility(View.GONE);
+            lyStudentId.setVisibility(View.GONE);
+        }
     }
 
 
@@ -164,26 +179,29 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     toast("请输入昵称");
                     return;
                 }
-                if (TextUtils.isEmpty(mDepartment)) {
-                    toast("请选择所在系");
-                    return;
-                }
-                if (TextUtils.isEmpty(mClazz)) {
-                    toast("请选择所在班级");
-                    return;
-                }
-                if (TextUtils.isEmpty(mStudentId)) {
-                    toast("请输入学号");
-                    return;
+                if (TextUtils.equals(identity, "student")) {
+                    if (TextUtils.isEmpty(mDepartment)) {
+                        toast("请选择所在系");
+                        return;
+                    }
+                    if (TextUtils.isEmpty(mClazz)) {
+                        toast("请选择所在班级");
+                        return;
+                    }
+                    if (TextUtils.isEmpty(mStudentId)) {
+                        toast("请输入学号");
+                        return;
+                    }
                 }
                 UserInforEntity userInforEntity = new UserInforEntity(mRegisterName, mNickName, mName, mDepartment, mClazz,
-                        mStudentId, mSex, mBirthday, mNation, mAddress, mHobby);
+                        mStudentId, mSex, mBirthday, mNation, mAddress, mHobby, identity);
                 Gson gson = new Gson();
                 String json = gson.toJson(userInforEntity);
                 updateUserInfor(json);
             default:
                 break;
         }
+
     }
 
     @Override
@@ -212,35 +230,38 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    public void updateUserInfor(String userInforJsonString) {
+    public void updateUserInfor(final String userInforJsonString) {
         progress.setVisibility(View.VISIBLE);
-        OkHttpClient okHttpClient = HttpUtil.getClient();
-        final Request request = new Request.Builder().url(HttpUrl.UPDATE_MY_INFOR + "?userInfor=" + userInforJsonString).get().build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        Observable.create(new Observable.OnSubscribe<String>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                Observable.just("注册失败，请检查一下网络是否连接").observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        progress.setVisibility(View.GONE);
-                        toast(s);
-                    }
-                });
-                e.printStackTrace();
+            public void call(Subscriber<? super String> subscriber) {
+                OkHttpClient okHttpClient = HttpUtil.getClient();
+                final Request request = new Request.Builder().url(HttpUrl.UPDATE_MY_INFOR + "?userInfor=" + userInforJsonString).get().build();
+                try {
+                    Response response = okHttpClient.newCall(request).execute();
+                    subscriber.onNext(response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Observable.just(response.body().string()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        progress.setVisibility(View.GONE);
+            public void call(String s) {
+                progress.setVisibility(View.GONE);
+                Gson gson = new Gson();
+                ReturnEntity returnEntity = gson.fromJson(s, ReturnEntity.class);
+                if (returnEntity != null) {
+                    if (returnEntity.getCode() == 1) {
                         ScreenManager.getScreenManager().appExit(RegisterActivity.this);
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                         intent.putExtra("mRegisterName", mRegisterName);
                         startActivity(intent);
+                    } else {
+                        toast(returnEntity.getMsg() + "");
                     }
-                });
+                } else {
+                    toast("添加个人信息失败");
+                }
 
             }
         });

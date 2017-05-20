@@ -43,8 +43,6 @@ public class ConversationListOperationCustomSample extends IMConversationListOpe
             Intent intent = LoginActivity.ywimKit.getChattingActivityIntent(conversation.getLatestEServiceContactId(), SchoolInforManager.appKay);
             fragment.getActivity().startActivity(intent);
             return true;
-        } else if (type == YWConversationType.Tribe) {
-            return true;
         } else if (type == YWConversationType.Custom) {
             isAddFriendDialog = new EdtDialog(fragment.getContext(), R.style.MyDialog, new EdtDialog.AddFriendListener() {
                 @Override
@@ -63,20 +61,7 @@ public class ConversationListOperationCustomSample extends IMConversationListOpe
             isAddFriendDialog.show();
 
             return true;
-        } else if (type == YWConversationType.unknow) {
-
-            return true;
-        } else if (type == YWConversationType.SHOP) {
-
-            return true;
-        } else if (type == YWConversationType.HJTribe) {
-
-            return true;
-        } else if (type == YWConversationType.CustomViewConversation) {
-            return true;
         }
-
-
         return false;
     }
 

@@ -25,10 +25,8 @@ public class UserInforEntity implements Serializable {
 
     public UserInforEntity() {
     }
-
-    public UserInforEntity(String userid, String mima, String nicheng, String xingming, String xibie, String banji, String xuehao, String xingbie, String shengri, String minzu, String jia, String xingqu, String shenfen, String touxiang, String zuoyouming) {
+    public UserInforEntity(String userid, String nicheng, String xingming, String xibie, String banji, String xuehao, String xingbie, String shengri, String minzu, String jia, String xingqu, String shenfen) {
         this.userid = userid;
-        this.mima = mima;
         this.nicheng = nicheng;
         this.xingming = xingming;
         this.xibie = xibie;
@@ -40,8 +38,6 @@ public class UserInforEntity implements Serializable {
         this.jia = jia;
         this.xingqu = xingqu;
         this.shenfen = shenfen;
-        this.touxiang = touxiang;
-        this.zuoyouming = zuoyouming;
     }
 
     public UserInforEntity(String userid, String nicheng, String xingming, String xibie, String banji, String xuehao, String xingbie, String shengri, String minzu, String jia, String xingqu) {

@@ -26,5 +26,8 @@ public class Constant {
     public static final String SHOW_BIG_PHOTO_TOPIC_FRAGMENT="topicFragment";
     public static final String CHOOSE_WAY_DIALOG_TYPE_GET_PHOTO="photo";
     public static final String CHOOSE_WAY_DIALOG_TYPE_NOTIFY_NOT_SEE="notifyNotSee";
+    public static final String CHOOSE_WAY_DIALOG_TYPE_CHOOSE_MY_IDENTITY="chooseMyIdentity";
+    public static final String IDENTITY="identity";
+
 
 }

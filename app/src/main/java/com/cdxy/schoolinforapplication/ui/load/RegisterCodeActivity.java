@@ -15,7 +15,9 @@ import com.cdxy.schoolinforapplication.R;
 import com.cdxy.schoolinforapplication.ScreenManager;
 import com.cdxy.schoolinforapplication.model.ReturnEntity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
+import com.cdxy.schoolinforapplication.util.Constant;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
+import com.cdxy.schoolinforapplication.util.NumberCheckUtil;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -28,6 +30,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -76,6 +79,14 @@ public class RegisterCodeActivity extends BaseActivity implements View.OnClickLi
                 registerName = edtRegisterName.getText().toString();
                 registerPassword = edtRegisterPassword.getText().toString();
                 String registerSurePassword = edtRegisterSurePassword.getText().toString();
+                if (TextUtils.isEmpty(registerName)){
+                    toast("请输入你的手机号");
+                    return;
+                }
+                if (!NumberCheckUtil.isMoibleNumber(registerName)){
+                    toast("你输入的手机号格式不正确");
+                    return;
+                }
                 if (TextUtils.isEmpty(registerPassword)) {
                     toast("请设置密码");
                     return;
@@ -105,53 +116,37 @@ public class RegisterCodeActivity extends BaseActivity implements View.OnClickLi
 
     public void register1() {
         progress.setVisibility(View.VISIBLE);
-        OkHttpClient okHttpClient =  HttpUtil.getClient();
-        Request request = new Request.Builder().url(HttpUrl.REGISTER + "?userid=" + registerName + "&&password=" + registerPassword).get().build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        Observable.create(new Observable.OnSubscribe<String>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                Observable.just("添加个人信息失败，请检查一下网络是否连接").observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        progress.setVisibility(View.GONE);
-                        toast(s);
-                    }
-                });
-                e.printStackTrace();
+            public void call(Subscriber<? super String> subscriber) {
+                OkHttpClient okHttpClient = HttpUtil.getClient();
+                Request request = new Request.Builder().url(HttpUrl.REGISTER + "?userid=" + registerName + "&&password=" + registerPassword).get().build();
+                try {
+                    Response response = okHttpClient.newCall(request).execute();
+                    subscriber.onNext(response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Observable.just(response.body().string()).map(new Func1<String, ReturnEntity>() {
-                    @Override
-                    public ReturnEntity call(String s) {
-                        Gson gson = new Gson();
-                        ReturnEntity returnEntity = gson.fromJson(s, ReturnEntity.class);
-                        return returnEntity;
+            public void call(String s) {
+                Gson gson = new Gson();
+                ReturnEntity returnEntity = gson.fromJson(s, ReturnEntity.class);
+                if (returnEntity != null) {
+                    if (returnEntity.getCode() == 1) {
+                        Intent intent = new Intent(RegisterCodeActivity.this, RegisterActivity.class);
+                        intent.putExtra("registerName", registerName);
+                        intent.putExtra(Constant.IDENTITY, getIntent().getStringExtra(Constant.IDENTITY));
+                        startActivity(intent);
+                    } else {
+                        toast(returnEntity.getMsg() + "");
                     }
-                }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<ReturnEntity>() {
-                            @Override
-                            public void call(ReturnEntity returnEntity) {
-                                if (returnEntity != null) {
-                                    if (returnEntity.getCode() == 1) {
-                                        toast("注册成功");
-                                        Intent intent = new Intent(RegisterCodeActivity.this, RegisterActivity.class);
-                                        intent.putExtra("registerName", registerName);
-                                        intent.putExtra("registerPassword", registerPassword);
-                                        startActivity(intent);
-                                    } else {
-                                        toast(returnEntity.getMsg() + "");
-                                    }
-                                } else {
-                                    toast("注册失败");
-                                }
-                                progress.setVisibility(View.GONE);
-                            }
-                        });
-
+                } else {
+                    toast("注册失败");
+                }
+                progress.setVisibility(View.GONE);
             }
         });
-
     }
 }
