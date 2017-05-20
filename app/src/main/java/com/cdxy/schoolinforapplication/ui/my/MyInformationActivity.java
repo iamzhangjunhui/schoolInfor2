@@ -75,7 +75,12 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
         txtRight.setVisibility(View.VISIBLE);
         userId = SharedPreferenceManager.instance(MyInformationActivity.this).getUserInfor().getUserid();
         id = userId;
-        GetUserInfor.getMyInfor(MyInformationActivity.this, userId);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GetUserInfor.getMyInfor(MyInformationActivity.this, userId);
+            }
+        }).start();
         userInfor = SharedPreferenceManager.instance(MyInformationActivity.this).getUserInfor();
         if (userInfor != null) {
             setData(userInfor);
@@ -156,7 +161,12 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 0) {
-            GetUserInfor.getMyInfor(MyInformationActivity.this, userId);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    GetUserInfor.getMyInfor(MyInformationActivity.this, userId);
+                }
+            }).start();
             String resultJson = data.getStringExtra("userInforJsonString");
             UserInforEntity userInforEntity = SchoolInforManager.gson.fromJson(resultJson, UserInforEntity.class);
             setData(userInforEntity);

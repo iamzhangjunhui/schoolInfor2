@@ -152,9 +152,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     //如果登陆成功
                     if (returnEntity.getCode() == 1) {
                         SharedPreferenceManager.instance(LoginActivity.this).setMyPassword(password);
-                        LoginReturnEntity loginReturnEntity = returnEntity.getData();
-                        aliLogin(loginReturnEntity.getUserid(), loginReturnEntity.getPassword());
-                        GetUserInfor.getMyInfor(LoginActivity.this, loginReturnEntity.getUserid());
+                        final LoginReturnEntity loginReturnEntity = returnEntity.getData();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                boolean isSucess = GetUserInfor.getMyInfor(LoginActivity.this, loginReturnEntity.getUserid());
+                                if (isSucess) {
+                                    aliLogin(loginReturnEntity.getUserid(), loginReturnEntity.getPassword());
+                                }
+                            }
+                        }).start();
                     } else {
                         toast(returnEntity.getMsg());
                         progress.setVisibility(View.GONE);

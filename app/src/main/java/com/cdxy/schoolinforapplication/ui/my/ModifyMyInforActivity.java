@@ -265,7 +265,12 @@ public class ModifyMyInforActivity extends BaseActivity implements View.OnClickL
                 ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
                 if (returnEntity != null) {
                     if (returnEntity.getCode() == 1) {
-                        GetUserInfor.getMyInfor(ModifyMyInforActivity.this, userid);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                GetUserInfor.getMyInfor(ModifyMyInforActivity.this, userid);
+                            }
+                        }).start();
                         Intent intent = new Intent();
                         intent.putExtra("userInforJsonString", userInforJsonString);
                         setResult(RESULT_OK, intent);

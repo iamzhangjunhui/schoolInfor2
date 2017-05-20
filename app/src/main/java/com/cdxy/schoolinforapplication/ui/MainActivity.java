@@ -484,7 +484,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
                 if (returnEntity != null) {
                     if (returnEntity.getCode() == 1) {
-                        GetUserInfor.getMyInfor(MainActivity.this, userid);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                GetUserInfor.getMyInfor(MainActivity.this, userid);
+                            }
+                        }).start();
                         txtMyMotto.setText(zuoyouming);
                     } else {
                         toast(returnEntity.getMsg() + "");
@@ -627,7 +632,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 if (returnEntity != null) {
                     if (returnEntity.getCode() == 1) {
                         if (file != null) {
-                            GetUserInfor.getMyInfor(MainActivity.this, userInfor.getUserid());
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    GetUserInfor.getMyInfor(MainActivity.this, userInfor.getUserid());
+                                }
+                            }).start();
                             Glide.with(MainActivity.this).load(file).placeholder(R.drawable.loading).bitmapTransform(new CropCircleTransformation(MainActivity.this)).into(imgMyIcon);
                             Glide.with(MainActivity.this).load(file).placeholder(R.drawable.loading).bitmapTransform(new CropCircleTransformation(MainActivity.this)).into(imgIcon);
                         } else {
