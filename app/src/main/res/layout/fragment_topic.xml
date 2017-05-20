@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cdxy.schoolinforapplication.ui.topic.TopicFragment">
-<RelativeLayout
+    <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/diliver_topic">
@@ -24,15 +24,22 @@
     <com.cdxy.schoolinforapplication.ui.widget.RefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ListView
             android:id="@+id/list_topic"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:divider="@null" />
     </com.cdxy.schoolinforapplication.ui.widget.RefreshLayout>
-
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="暂无数据"
+            android:visibility="gone"
+            android:textColor="@color/text_light_colored"
+            android:gravity="center"/>
     <LinearLayout
         android:id="@+id/layout_add_comment"
         android:layout_width="match_parent"
@@ -69,11 +76,10 @@
             android:textSize="@dimen/content_text_size" />
     </LinearLayout>
 </RelativeLayout>
-
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 </FrameLayout>

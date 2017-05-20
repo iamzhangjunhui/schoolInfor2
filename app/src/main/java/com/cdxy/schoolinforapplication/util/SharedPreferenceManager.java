@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import com.cdxy.schoolinforapplication.model.UserInfor.UserInforEntity;
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * Created by huihui on 2017/3/6.
  */

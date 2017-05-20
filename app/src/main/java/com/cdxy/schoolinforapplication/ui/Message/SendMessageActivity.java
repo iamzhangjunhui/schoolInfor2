@@ -225,6 +225,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
         Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
+                btnRight.setClickable(false);
                 MediaType JSON = MediaType.parse("application/json; charset=utf-8");
                 OkHttpClient okHttpClient = HttpUtil.getClient();
                 SendMessageEntity sendMessageEntity = new SendMessageEntity(title, content, messageTye, sendTo, MyInformationActivity.getUserid(), isSelectAll);
@@ -259,6 +260,8 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 
             }
         });
+        btnRight.setClickable(true);
+
     }
 
 }

@@ -48,6 +48,9 @@ import com.cdxy.schoolinforapplication.util.GetUserInfor;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
 import com.cdxy.schoolinforapplication.util.SharedPreferenceManager;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -60,8 +63,6 @@ import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -119,6 +120,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     LinearLayout layoutBottomMessage;
     @BindView(R.id.draglayout)
     DragLayout draglayout;
+    public static boolean isReturnFromAddTopic = false;
+    @BindView(R.id.ly_department)
+    LinearLayout lyDepartment;
     private long exitTime = 0;
     private boolean isOpon;//侧滑栏是否打开
     private FragmentManager fragmentManager;
@@ -142,12 +146,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         ScreenManager.getScreenManager().pushActivity(this);
+        init();
+        setFragments(1);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        init();
+    public void init() {
         txtTitle.setText("话题");
         btnRight.setText("创建话题");
         btnRight.setOnClickListener(new View.OnClickListener() {
@@ -157,12 +161,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(intent);
             }
         });
-        setFragments(1);
-    }
-
-    @Override
-    public void init() {
-        //获取是否是从添加话题处返回
         if (fragmentManager == null) {
 
             fragmentManager = getSupportFragmentManager();
@@ -172,8 +170,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 fragmentManager.findFragmentById(R.id.message_fragment)};
         textViews = new TextView[]{txtBottomChat, txtBottomTopic, txtBottomMessage};
         imageViews = new ImageView[]{imgBottomChat, imgBottomTopic, imgBottomMessage};
+        bindUserInfor();
+
+    }
+
+    private void bindUserInfor() {
         userInfor = SharedPreferenceManager.instance(MainActivity.this).getUserInfor();
         if (userInfor != null) {
+            if (userInfor.getShenfen().equals("teacher")) {
+                lyDepartment.setVisibility(View.GONE);
+            }
             String icon = userInfor.getTouxiang();
             if (!TextUtils.isEmpty(icon)) {
                 Glide.with(MainActivity.this).load(icon).placeholder(R.drawable.loading).bitmapTransform(new CropCircleTransformation(MainActivity.this)).into(imgMyIcon);
@@ -201,7 +207,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 txtMyDepartment.setText(department);
             }
         }
-
     }
 
     //判断双击时间间隔是否小于2秒
@@ -243,12 +248,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mAliasCallback = new TagAliasCallback() {
             @Override
             public void gotResult(int code, String alias, Set<String> tags) {
-                String logs;
+                String logs = "";
                 switch (code) {
                     case 0:
-                        logs = "Set tag success";
                         SharedPreferenceManager.instance(MainActivity.this).setIsAddtag(true);
-                        Log.i(TAG, logs);
                         // 建议这里往 SharePreference 里写一个成功设置的状态。成功设置一次后，以后不必再次设置了。
                         break;
                     case 6002:
@@ -260,10 +263,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     default:
                         logs = "Failed with errorCode = " + code;
                         Log.e(TAG, logs);
+
                 }
-                Toast.makeText(MainActivity.this, logs, Toast.LENGTH_SHORT).show();
+                toast(logs);
             }
         };
+
+
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -539,6 +545,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         }
                     }
                 }
+                if (resultCode == Constant.REQUEST_CODE_RETURN_FORM_ADD_TOPIC) {
+                    isReturnFromAddTopic = true;
+                }
             }
         }
     }
@@ -629,7 +638,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         toast(returnEntity.getMsg() + "");
                     }
                 } else {
-                    toast("上传头像出错");
+                    toast("修改头像出错");
                 }
 
             }

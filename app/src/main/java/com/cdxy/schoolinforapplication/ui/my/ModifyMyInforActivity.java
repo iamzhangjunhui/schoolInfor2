@@ -32,8 +32,6 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -79,6 +77,12 @@ public class ModifyMyInforActivity extends BaseActivity implements View.OnClickL
     LinearLayout activityRegister;
     @BindView(R.id.progress)
     ProgressBar progress;
+    @BindView(R.id.ly_department)
+    LinearLayout lyDepartment;
+    @BindView(R.id.ly_class)
+    LinearLayout lyClass;
+    @BindView(R.id.ly_student_id)
+    LinearLayout lyStudentId;
     private UserInforEntity userInfor;
 
     @Override
@@ -94,7 +98,14 @@ public class ModifyMyInforActivity extends BaseActivity implements View.OnClickL
     public void init() {
         txtTitle.setText("修改我的个人信息");
         userInfor = (UserInforEntity) getIntent().getSerializableExtra("userInfor");
-        setData();
+        if (userInfor!=null) {
+            if (userInfor.getShenfen().equals("teacher")) {
+                lyClass.setVisibility(View.GONE);
+                lyDepartment.setVisibility(View.GONE);
+                lyStudentId.setVisibility(View.GONE);
+            }
+            setData();
+        }
     }
 
     @Override

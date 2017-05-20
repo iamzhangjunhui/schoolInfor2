@@ -26,13 +26,16 @@ import com.cdxy.schoolinforapplication.model.topic.ReturnCommentEntity;
 import com.cdxy.schoolinforapplication.model.topic.ReturnThumb;
 import com.cdxy.schoolinforapplication.model.topic.ReturnTopicEntity;
 import com.cdxy.schoolinforapplication.model.topic.TopicEntity;
+import com.cdxy.schoolinforapplication.ui.MainActivity;
 import com.cdxy.schoolinforapplication.ui.base.BaseFragment;
 import com.cdxy.schoolinforapplication.ui.widget.RefreshLayout;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
@@ -61,6 +64,8 @@ public class TopicFragment extends BaseFragment {
     LinearLayout layoutAddComment;
     @BindView(R.id.progress)
     ProgressBar progress;
+    @BindView(R.id.empty_view)
+    TextView emptyView;
     private TopicAdapter adapter;
     private List<TopicEntity> list;
     private int topicNummber;
@@ -68,12 +73,20 @@ public class TopicFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            emptyView.setVisibility(View.GONE);
             if (msg.what == 1) {
+                if (list.size() == 0) {
+                    emptyView.setVisibility(View.VISIBLE);
+                    listTopic.setEmptyView(emptyView);
+                }
                 adapter.notifyDataSetChanged();
                 if (refreshLayout.isRefreshing()) {
                     refreshLayout.setRefreshing(false);
                 }
                 progress.setVisibility(View.GONE);
+                MainActivity.isReturnFromAddTopic = false;
+            } else if (msg.what == 2) {
+                progress.setVisibility(View.VISIBLE);
             }
         }
     };
@@ -124,13 +137,13 @@ public class TopicFragment extends BaseFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                progress.setVisibility(View.VISIBLE);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         getAllTopic();
                     }
                 }).start();
+
             }
         });
         refreshLayout.setOnLoadListener(new RefreshLayout.OnLoadListener() {
@@ -161,6 +174,9 @@ public class TopicFragment extends BaseFragment {
 
     private void getAllTopic() {
         list.clear();
+        if (MainActivity.isReturnFromAddTopic) {
+            handler.sendEmptyMessage(2);
+        }
         Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
@@ -183,23 +199,27 @@ public class TopicFragment extends BaseFragment {
                     if (returnEntity.getCode() == 1) {
                         List<ReturnTopicEntity> returnTopicList = returnEntity.getData();
                         topicNummber = returnTopicList.size();
-                        for (int j = 0; j < topicNummber; j++) {
-                            String topicid = returnTopicList.get(j).getTopicid();
-                            String userid = returnTopicList.get(j).getAuthorid();
-                            if ((!TextUtils.isEmpty(topicid)) && (!TextUtils.isEmpty(userid))) {
-                                TopicEntity topicEntity = new TopicEntity();
-                                topicEntity.setContent(returnTopicList.get(j).getContent());
-                                topicEntity.setCreate_time(returnTopicList.get(j).getCreatetime());
-                                topicEntity.setIcon(returnTopicList.get(j).getIcon());
-                                topicEntity.setNickName(returnTopicList.get(j).getNickName());
-                                topicEntity.setUserid(userid);
-                                topicEntity.setTopicid(topicid);
-                                getTopicPhoto(topicid, topicEntity, j);
-                            }
+                        if (topicNummber == 0) {
+                            handler.sendEmptyMessage(1);
+                        } else {
+                            for (int j = 0; j < topicNummber; j++) {
+                                String topicid = returnTopicList.get(j).getTopicid();
+                                String userid = returnTopicList.get(j).getAuthorid();
+                                if ((!TextUtils.isEmpty(topicid)) && (!TextUtils.isEmpty(userid))) {
+                                    TopicEntity topicEntity = new TopicEntity();
+                                    topicEntity.setContent(returnTopicList.get(j).getContent());
+                                    topicEntity.setCreate_time(returnTopicList.get(j).getCreatetime());
+                                    topicEntity.setIcon(returnTopicList.get(j).getIcon());
+                                    topicEntity.setNickName(returnTopicList.get(j).getNickName());
+                                    topicEntity.setUserid(userid);
+                                    topicEntity.setTopicid(topicid);
+                                    getTopicPhoto(topicid, topicEntity, j);
+                                }
 
+                            }
                         }
-                    }else {
-                        toast(returnEntity.getMsg()+"");
+                    } else {
+                        toast(returnEntity.getMsg() + "");
                     }
                 }
             }
@@ -235,8 +255,8 @@ public class TopicFragment extends BaseFragment {
                             }
                         }
 
-                    }else {
-                        toast(returnEntity.getMsg()+"");
+                    } else {
+                        toast(returnEntity.getMsg() + "");
                     }
                 }
 
@@ -275,8 +295,8 @@ public class TopicFragment extends BaseFragment {
                                 topicEntity.setComments(comments);
                             }
                         }
-                    }else {
-                        toast(returnEntity.getMsg()+"");
+                    } else {
+                        toast(returnEntity.getMsg() + "");
                     }
                 }
                 getAllThumb(topicEntity, position);
@@ -311,8 +331,8 @@ public class TopicFragment extends BaseFragment {
                             thumbs.add(thumb.getUserid());
                         }
                         topicEntity.setThumbPersonsNickname(thumbs);
-                    }else {
-                        toast(returnEntity.getMsg()+"");
+                    } else {
+                        toast(returnEntity.getMsg() + "");
                     }
 
                 }
@@ -330,4 +350,5 @@ public class TopicFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
     }
+
 }

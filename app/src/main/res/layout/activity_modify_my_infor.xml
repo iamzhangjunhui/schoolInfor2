@@ -92,6 +92,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ly_department"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="10dp"
@@ -119,6 +120,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ly_class"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="10dp"
@@ -146,6 +148,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ly_student_id"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="10dp"

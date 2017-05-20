@@ -19,6 +19,7 @@ public class Constant {
     public static final int MY_SEND_MESSAGE=2;
     public static final int  REQUEST_CODE_CAMERA=7;
     public static final int REQUEST_CODE_PICTURE=8;
+    public static final int REQUEST_CODE_RETURN_FORM_ADD_TOPIC=9;
     public static final String EDTDIALOG_TYPE_WANT_ADD_FRIEND="wantAddFriend";
     public static final String EDTDIALOG_TYPE_ADD_FRIEND="AddFriend";
     public static final String EDTDIALOG_TYPE_UPDATE_NAME="updateName";
