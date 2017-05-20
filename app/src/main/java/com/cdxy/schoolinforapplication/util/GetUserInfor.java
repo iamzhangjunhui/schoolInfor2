@@ -20,9 +20,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by huihui on 2017/5/1.
- */
+
 
 public class GetUserInfor {
 

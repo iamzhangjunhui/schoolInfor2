@@ -142,15 +142,15 @@ public class MyFriendActivity extends BaseActivity implements View.OnClickListen
                 //创建“update”按钮的item
                 SwipeMenuItem updateMenu = new SwipeMenuItem(MyFriendActivity.this);
                 updateMenu.setBackground(R.color.modify_my_friend_name);
-                updateMenu.setWidth(60);
+                updateMenu.setWidth(120);
                 updateMenu.setTitle("修改备注");
                 updateMenu.setTitleSize(16);
                 updateMenu.setTitleColor(getResources().getColor(R.color.white));
                 menu.addMenuItem(updateMenu);
                 //创建“删除”按钮的item
                 SwipeMenuItem deleteMenu = new SwipeMenuItem(MyFriendActivity.this);
-                deleteMenu.setBackground(R.color.colorAccent);
-                deleteMenu.setWidth(60);
+                deleteMenu.setBackground(R.color.edt_line_color);
+                deleteMenu.setWidth(120);
                 deleteMenu.setTitle("删除好友");
                 deleteMenu.setTitleSize(16);
                 deleteMenu.setTitleColor(getResources().getColor(R.color.white));

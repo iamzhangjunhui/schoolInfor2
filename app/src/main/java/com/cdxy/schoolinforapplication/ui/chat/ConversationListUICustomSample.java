@@ -7,9 +7,7 @@ import com.alibaba.mobileim.aop.custom.IMConversationListUI;
 import com.alibaba.mobileim.conversation.YWConversation;
 import com.alibaba.mobileim.conversation.YWConversationType;
 
-/**
- * Created by huihui on 2017/2/26.
- */
+
 
 //继承IMConversationListUI，同时提供构造方法
 //自定义一个无标题栏的会话列表的fragment的ui的类

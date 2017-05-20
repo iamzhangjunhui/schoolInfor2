@@ -11,9 +11,6 @@ import com.cdxy.schoolinforapplication.R;
 
 import java.util.List;
 
-/**
- * Created by huihui on 2016/12/14.
- */
 
 public class Text1ListAdapter extends BaseAdapter {
     private Context context;

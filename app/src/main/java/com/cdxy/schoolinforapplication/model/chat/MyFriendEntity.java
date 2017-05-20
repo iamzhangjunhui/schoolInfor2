@@ -1,8 +1,5 @@
 package com.cdxy.schoolinforapplication.model.chat;
 
-/**
- * Created by huihui on 2017/2/26.
- */
 
     public class MyFriendEntity {
     private String name;

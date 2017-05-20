@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 import com.cdxy.schoolinforapplication.R;
 
-/**
- * Created by huihui on 2016/12/14.
- */
 
 public class Text1Adapter extends BaseAdapter {
     private Context context;

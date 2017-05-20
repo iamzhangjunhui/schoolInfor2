@@ -25,9 +25,6 @@ import java.util.Stack;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
-/**
- * Created by huihui on 2016/12/20.
- */
 
 public class SchoolInforManager extends MultiDexApplication {
     private static Context context;

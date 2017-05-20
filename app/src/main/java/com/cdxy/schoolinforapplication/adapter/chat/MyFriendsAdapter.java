@@ -18,9 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
-/**
- * Created by huihui on 2017/2/26.
- */
+
 
 public class MyFriendsAdapter extends BaseAdapter {
     private List<MyFriendEntity> list;

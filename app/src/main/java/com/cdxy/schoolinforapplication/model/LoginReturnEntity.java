@@ -1,8 +1,6 @@
 package com.cdxy.schoolinforapplication.model;
 
-/**
- * Created by huihui on 2017/4/26.
- */
+
 
 public class LoginReturnEntity {
     private String userid;

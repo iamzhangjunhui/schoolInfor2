@@ -2,9 +2,7 @@ package com.cdxy.schoolinforapplication.model.UserInfor;
 
 import java.io.Serializable;
 
-/**
- * Created by huihui on 2017/3/6.
- */
+
 
 public class UserInforEntity implements Serializable {
     private String userid="";
