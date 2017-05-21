@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.cdxy.schoolinforapplication.HttpUrl;
 import com.cdxy.schoolinforapplication.R;
 import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.adapter.topic.ParentAdapter;
+import com.cdxy.schoolinforapplication.model.ReturnEntity;
 import com.cdxy.schoolinforapplication.model.SendMessageEntity;
 import com.cdxy.schoolinforapplication.model.tree.ChildEntity;
 import com.cdxy.schoolinforapplication.model.tree.ParentEntity;
@@ -41,6 +43,7 @@ import okhttp3.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class SendMessageActivity extends BaseActivity implements View.OnClickListener, ExpandableListView.OnGroupClickListener, CompoundButton.OnCheckedChangeListener {
@@ -68,6 +71,8 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
     RadioButton rbtnNotImportent;
     @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
+    @BindView(R.id.progress)
+    ProgressBar progress;
     private ParentAdapter adapter;
     private List<ParentEntity> list;
     int messageTye = 0;
@@ -222,10 +227,10 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         }
+        progress.setVisibility(View.VISIBLE);
         Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
-                btnRight.setClickable(false);
                 MediaType JSON = MediaType.parse("application/json; charset=utf-8");
                 OkHttpClient okHttpClient = HttpUtil.getClient();
                 SendMessageEntity sendMessageEntity = new SendMessageEntity(title, content, messageTye, sendTo, MyInformationActivity.getUserid(), isSelectAll);
@@ -244,23 +249,20 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
                     e.printStackTrace();
                 }
             }
-        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
+        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
             @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onNext(String s) {
-
+            public void call(String s) {
+                ReturnEntity returnEntity=SchoolInforManager.gson.fromJson(s,ReturnEntity.class);
+                if (returnEntity!=null){
+                    if (returnEntity.getCode()==1){
+                        toast(returnEntity.getData().toString());
+                    }else {
+                        toast(returnEntity.getMsg()+"");
+                    }
+                }
+                progress.setVisibility(View.GONE);
             }
         });
-        btnRight.setClickable(true);
 
     }
 

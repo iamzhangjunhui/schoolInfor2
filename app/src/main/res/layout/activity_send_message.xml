@@ -1,147 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_send_message"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.cdxy.schoolinforapplication.ui.Message.SendMessageActivity">
 
-    <include layout="@layout/view_title" />
-    <!--发送对象、发送消息标题、消息详情、消息类型-->
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/activity_send_message"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include layout="@layout/view_title" />
+        <!--发送对象、发送消息标题、消息详情、消息类型-->
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="20dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="标题:"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/messege_title_text_size" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/edt_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:paddingLeft="10dp"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/diliver" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="标题:"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_vertical"
+                    android:text="消息详情："
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/messege_title_text_size" />
+
+                <EditText
+                    android:id="@+id/edt_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/add_border_light_color"
+                    android:gravity="top"
+                    android:padding="10dp"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/content_text_size" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rbtn_importent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="重要消息"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/content_text_size" />
+
+                    <RadioButton
+                        android:id="@+id/rbtn_not_importent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="普通消息"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/content_text_size" />
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_vertical"
+                    android:text="发送到："
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/messege_title_text_size" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/edt_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:paddingLeft="10dp"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/text_size" />
+                    <CheckBox
+                        android:id="@+id/ck_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-                    <View
+                    <TextView
+                        android:id="@+id/txt_child_name"
                         android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/diliver" />
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:onClick="onClick"
+                        android:paddingRight="10dp"
+                        android:text="全选"
+                        android:textColor="@color/text_color" />
                 </LinearLayout>
 
-            </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:gravity="center_vertical"
-                android:text="消息详情："
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/messege_title_text_size" />
-
-            <EditText
-                android:id="@+id/edt_content"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/add_border_light_color"
-                android:gravity="top"
-                android:padding="10dp"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/content_text_size" />
-
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rbtn_importent"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="重要消息"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/content_text_size" />
-
-                <RadioButton
-                    android:id="@+id/rbtn_not_importent"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="普通消息"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/content_text_size" />
-            </RadioGroup>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:gravity="center_vertical"
-                android:text="发送到："
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/messege_title_text_size" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="right"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/ck_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/txt_child_name"
+                <com.cdxy.schoolinforapplication.ui.widget.ScollerExpandableListView
+                    android:id="@+id/eList"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:onClick="onClick"
-                    android:paddingRight="10dp"
-                    android:text="全选"
-                    android:textColor="@color/text_color" />
+                    android:layout_height="match_parent"
+                    android:childDivider="@null"
+                    android:divider="@null"
+                    android:scrollbars="none" />
             </LinearLayout>
-
-
-            <com.cdxy.schoolinforapplication.ui.widget.ScollerExpandableListView
-                android:id="@+id/eList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:childDivider="@null"
-                android:divider="@null"
-                android:scrollbars="none" />
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+<ProgressBar
+    android:id="@+id/progress"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:visibility="gone"/>
+</FrameLayout>
