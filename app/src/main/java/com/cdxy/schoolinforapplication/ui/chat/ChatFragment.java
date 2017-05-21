@@ -91,7 +91,7 @@ public class ChatFragment extends BaseFragment {
                                 break;
                         }
                     }
-                }, getActivity(), Constant.EDTDIALOG_TYPE_ADD_FRIEND);
+                }, getActivity(), Constant.EDTDIALOG_TYPE_ADD_FRIEND,contact.getUserId());
                 edtDialog.show();
             }
 

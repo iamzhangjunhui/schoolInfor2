@@ -28,7 +28,7 @@ import java.util.List;
 
 public class SelectPhotoActivity extends BaseActivity implements View.OnClickListener {
     private SelectPhotoAdapter selectPhotoAdapter;
-    private List<SelectPhoto> selectPhotos;
+    private List<SelectPhoto> selectPhotos;//显示的图片
     private GridView mGridView;
     private static final int SELECT_ALL = 1;
     private List<Folder> folders;
@@ -36,8 +36,7 @@ public class SelectPhotoActivity extends BaseActivity implements View.OnClickLis
     private ListPopupWindow listPopupWindow;
     private TextView mTxtSelectFolder;
     private TextView mTxtOk;
-    private ArrayList<SelectPhoto> selectPhotoList = new ArrayList<>();
-
+    private ArrayList<SelectPhoto> selectPhotoList = new ArrayList<>();//用户选择的图片
 
     private LoaderManager.LoaderCallbacks loaderCallbacks;
 
@@ -116,18 +115,20 @@ public class SelectPhotoActivity extends BaseActivity implements View.OnClickLis
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
                 if (data != null) {
                     if (data.getCount() > 0) {
-                        while (data.moveToNext()) {//遍历得到的图片，获得图片所在的文件夹
+                        //遍历得到的图片的路径并添加到显示图片GridView的数据源中。
+                        while (data.moveToNext()) {
                             SelectPhoto selectPhoto = new SelectPhoto();
                             String path = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[0]));
                             selectPhoto.setPath(path);
                             selectPhotos.add(selectPhoto);
-                            //通过文件找到文件夹
+                            //通过文件找到文件所在文件夹
                             File folderFile = new File(path).getParentFile();
+                            //如果存在该文件夹
                             if (folderFile != null && folderFile.exists()) {
                                 String folderPath = folderFile.getAbsolutePath();
-                                //判断文件夹是否存在本地保存文件夹信息的集合里面
+                                //判断文件夹的相关信息是否存在本地保存文件夹信息的集合里面
                                 Folder folder = getFolderFromPath(folderPath);
-                                if (folder == null) {//不在，就新建一个文件夹添加到集合中
+                                if (folder == null) {//不在，就将该文件夹信息添加到文件夹信息集合中
                                     Folder f = new Folder();
                                     f.setPath(folderPath);
                                     f.setName(folderFile.getName());
@@ -135,7 +136,7 @@ public class SelectPhotoActivity extends BaseActivity implements View.OnClickLis
                                     folderPhotos.add(selectPhoto);
                                     f.setSelectPhotos(folderPhotos);
                                     folders.add(f);
-                                } else {//存在，在存在的文件夹中添加图片
+                                } else {//存在，在对应的文件夹信息数据源的中添加图片
                                     folder.getSelectPhotos().add(new SelectPhoto(path, 0));
                                 }
                             }
@@ -155,6 +156,7 @@ public class SelectPhotoActivity extends BaseActivity implements View.OnClickLis
         };
     }
 
+    //判断该文件夹的信息是否在本地数据源中保存
     private Folder getFolderFromPath(String path) {
         if (folders != null) {
             for (Folder folder : folders) {
@@ -176,8 +178,8 @@ public class SelectPhotoActivity extends BaseActivity implements View.OnClickLis
             case R.id.ok:
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
-                ArrayList<String> objectList=new ArrayList<>();
-                for (SelectPhoto selectPhoto:selectPhotoList){
+                ArrayList<String> objectList = new ArrayList<>();
+                for (SelectPhoto selectPhoto : selectPhotoList) {
                     objectList.add(selectPhoto.getPath());
                 }
                 bundle.putStringArrayList("selectResult", objectList);

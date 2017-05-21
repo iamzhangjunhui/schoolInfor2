@@ -95,7 +95,7 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
     ImageView imgIndicator;
     @BindView(R.id.progress)
     ProgressBar progress;
-    private List<Object> list;
+    private List<Object> list;//显示的图片
     private TopicPhotosAdapter adapter;
     private String newTopic;
     private boolean isShowAddress;
@@ -105,7 +105,7 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
     private static List<String> addressList = new ArrayList<>();
     private ChooseWayDialog chooseWayDialog;
     private File file;//保存拍照后裁剪前的临时图片
-    private List<String> topicPhotos = new ArrayList<>();
+    private List<String> topicPhotos = new ArrayList<>();//要上传的图片，少了提示添加那张图片，并且数据类型为String，是图片的path
     private String topicid;//话题id;
     private UserInforEntity userInforEntity;
 
@@ -164,6 +164,7 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.btn_right:
+                //UUID.randomUUID()用于生成32位的随机数
                 topicid = String.valueOf(UUID.randomUUID());
                 if (topicPhotos.size() != 0) {
                     updateTopicPhotos();
@@ -311,7 +312,6 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
                 String addressInfor = addressList.get(i);
                 newTopic = edtNewTopic.getText().toString();//创建话题编辑框的内容
                 if (newTopic.contains("   --")) {//判断是否已经显示了地址信息
-                    int j = newTopic.indexOf("   --");
                     if (newTopic.indexOf("   --") == 0) {//判断是否只显示了地址信息
                         newTopic = "";
                     } else {

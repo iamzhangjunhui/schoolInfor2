@@ -54,8 +54,6 @@ public class TopicFragment extends BaseFragment {
     RefreshLayout refreshLayout;
     @BindView(R.id.list_topic)
     ListView listTopic;
-    @BindView(R.id.layout_progress)
-    LinearLayout layoutProgress;
     @BindView(R.id.edt_add_comment)
     EditText edtAddComment;
     @BindView(R.id.txt_send_new_comment)

@@ -12,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.cdxy.schoolinforapplication.R;
+import com.cdxy.schoolinforapplication.model.UserInfor.UserInforEntity;
 import com.cdxy.schoolinforapplication.ui.base.BaseFragment;
 import com.cdxy.schoolinforapplication.util.Constant;
+import com.cdxy.schoolinforapplication.util.SharedPreferenceManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +37,7 @@ public class MessageFragment extends BaseFragment {
     ImageView imgIcon3;
     @BindView(R.id.layout_my_message)
     LinearLayout layoutMyMessage;
-//    @BindView(R.id.not_see_list)
+    //    @BindView(R.id.not_see_list)
 //    Button button;
     private String identity;
 
@@ -58,17 +60,21 @@ public class MessageFragment extends BaseFragment {
 
     @Override
     public void init() {
-//      identity= SharedPreferenceManager.instance(getContext()).getUserInfor().getShenfen();
-        String identity="老师";
-        if (identity.equals("老师")){
-            layoutMyMessage.setVisibility(View.VISIBLE);
+        UserInforEntity userInforEntity = SharedPreferenceManager.instance(getContext()).getUserInfor();
+        if (userInforEntity != null) {
+            identity = userInforEntity.getShenfen();
+            if (identity.equals("teacher")) {
+                layoutMyMessage.setVisibility(View.VISIBLE);
+            }
         }
+
     }
-    private  void addListener(){
+
+    private void addListener() {
         layoutImportantMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getContext(),MessageListActivity.class);
+                Intent intent = new Intent(getContext(), MessageListActivity.class);
                 intent.putExtra("message_type", Constant.IMPORTANT_MESSAGE);
                 startActivity(intent);
             }
@@ -76,7 +82,7 @@ public class MessageFragment extends BaseFragment {
         layoutNotImportantMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getContext(),MessageListActivity.class);
+                Intent intent = new Intent(getContext(), MessageListActivity.class);
                 intent.putExtra("message_type", Constant.NOT_IMPORTANT_MESSAGE);
                 startActivity(intent);
             }
@@ -84,7 +90,7 @@ public class MessageFragment extends BaseFragment {
         layoutMyMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getContext(),MessageListActivity.class);
+                Intent intent = new Intent(getContext(), MessageListActivity.class);
                 intent.putExtra("message_type", Constant.MY_SEND_MESSAGE);
                 startActivity(intent);
             }

@@ -99,7 +99,7 @@ public class MessageListActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void init() {
         Intent intent = getIntent();
-        messageType = intent.getIntExtra("message_type",0);
+        messageType = intent.getIntExtra("message_type", 0);
         list = new ArrayList<>();
     }
 
@@ -111,7 +111,7 @@ public class MessageListActivity extends BaseActivity implements View.OnClickLis
                 OkHttpClient okHttpClient = HttpUtil.getClient();
                 MessageEntity messageEntity = new MessageEntity();
 
-                Request request = new Request.Builder().url(HttpUrl.GET_MESSAGE+"?messageType="+messageType)
+                Request request = new Request.Builder().url(HttpUrl.GET_MESSAGE + "?messageType=" + messageType)
                         .get()
                         .build();
                 try {
@@ -132,43 +132,44 @@ public class MessageListActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void call(String s) {
                 int messageNumber;
-                Type listType = new TypeToken<List<MessageReturnEntity>>() {}.getType();
+                Type listType = new TypeToken<List<MessageReturnEntity>>() {
+                }.getType();
                 MessageReturnEntity<List<MessageEntity>> returnEntity = SchoolInforManager.gson.fromJson(s, MessageReturnEntity.class);
                 List<MessageEntity> entityList = new ArrayList<>();
 //                if (returnEntity != null) {
 //                    returnEntity = gson.fromJson(s, new TypeToken<ReturnEntity<List<ReturnTopicEntity>>>() {
 //                    }.getType());
-                    if (returnEntity.getCode() == 1) {
-                        List<MessageEntity> returnTopicList = returnEntity.getData();
+                if (returnEntity.getCode() == 1) {
+                    List<MessageEntity> returnTopicList = returnEntity.getData();
 //                        returnList.addAll(returnTopicList);
-                        messageNumber = returnTopicList.size();
-                        for (int j = 0; j < messageNumber; j++) {
-                            long TID = returnTopicList.get(j).getTID();
-                            String userid = returnTopicList.get(j).getSendPersonName();
-                            if (TID!=0 && (!TextUtils.isEmpty(userid))) {
-                                MessageEntity messageEntity = new MessageEntity();
-                                messageEntity = returnTopicList.get(j);
-                                messageEntity.setContent(returnTopicList.get(j).getContent());
-                                messageEntity.setTime(returnTopicList.get(j).getTime());
-                                messageEntity.setMessageType(returnTopicList.get(j).getMessageType());
-                                messageEntity.setSendPersonName(userid);
-                                messageEntity.setTitle(returnTopicList.get(j).getTitle());
-                                messageEntity.setSendTo(returnTopicList.get(j).getSendTo());
-                                returnList.add(messageEntity);
-                            }
-
+                    messageNumber = returnTopicList.size();
+                    for (int j = 0; j < messageNumber; j++) {
+                        long TID = returnTopicList.get(j).getTID();
+                        String userid = returnTopicList.get(j).getSendPersonName();
+                        if (TID != 0 && (!TextUtils.isEmpty(userid))) {
+                            MessageEntity messageEntity = new MessageEntity();
+                            messageEntity = returnTopicList.get(j);
+                            messageEntity.setContent(returnTopicList.get(j).getContent());
+                            messageEntity.setTime(returnTopicList.get(j).getTime());
+                            messageEntity.setMessageType(returnTopicList.get(j).getMessageType());
+                            messageEntity.setSendPersonName(userid);
+                            messageEntity.setTitle(returnTopicList.get(j).getTitle());
+                            messageEntity.setSendTo(returnTopicList.get(j).getSendTo());
+                            returnList.add(messageEntity);
                         }
 
                     }
+
                 }
+            }
 //            }
         });
 
         //我发出的消息列表
-        if(messageType==MY_SEND_MESSAGE){
+        if (messageType == MY_SEND_MESSAGE) {
             List<MessageEntity> myMessageList = new ArrayList<>();
-            for (MessageEntity messageEntity:returnList){
-                if (messageEntity.getSendPersonName().equals(MyInformationActivity.getUserid())){
+            for (MessageEntity messageEntity : returnList) {
+                if (messageEntity.getSendPersonName().equals(MyInformationActivity.getUserid())) {
                     myMessageList.add(messageEntity);
                 }
             }

@@ -65,10 +65,10 @@ public class TopicAdapter extends BaseAdapter {
     private LinearLayout layoutAddComment;
     private EditText edtAddComment;
     private TextView txtSendNewComment;
-    ViewHolder viewHolder;
-    UserInforEntity userInfor;
-    String myNikename;
-    String myUserid;
+    private ViewHolder viewHolder;
+    private UserInforEntity userInfor;
+    private String myNikename;
+    private String myUserid;
     private NotifyDialog notifyDialog;
     private EdtDialog edtDialog;
 
@@ -102,7 +102,7 @@ public class TopicAdapter extends BaseAdapter {
         view = LayoutInflater.from(activity).inflate(R.layout.item_topic, null);
         viewHolder = new ViewHolder(view);
         viewHolder.layout_divider = (LinearLayout) view.findViewById(R.id.layout_divider);
-        view.setTag(viewHolder);
+//        view.setTag(viewHolder);
 //        } else {
 //            viewHolder = (ViewHolder) view.getTag();
 //        }
@@ -270,7 +270,6 @@ public class TopicAdapter extends BaseAdapter {
                 } else {
                     Toast.makeText(activity, "你还没设置昵称，快去设置吧", Toast.LENGTH_SHORT).show();
                 }
-                TopicAdapter.this.notifyDataSetChanged();
             }
         });
         return view;
@@ -395,7 +394,7 @@ public class TopicAdapter extends BaseAdapter {
             @Override
             public void call(String s) {
                 ReturnEntity returnEntity = SchoolInforManager.gson.fromJson(s, ReturnEntity.class);
-                if (returnEntity!=null) {
+                if (returnEntity != null) {
                     if (returnEntity.getCode() == 1) {
                         list.remove(position);
                         TopicAdapter.this.notifyDataSetChanged();
@@ -452,5 +451,4 @@ public class TopicAdapter extends BaseAdapter {
         LoginActivity.iywContactService.addContact(target, SchoolInforManager.appKay, target, edtDialog.content, callback);
 
     }
-
 }

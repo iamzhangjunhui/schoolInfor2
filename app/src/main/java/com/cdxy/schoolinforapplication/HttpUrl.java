@@ -27,6 +27,7 @@ public class HttpUrl {
     public static final String SEND_COMMENT=BASE_URL+"/comment/addComment";
     public static final String UPDATE_PASSWORD=BASE_URL+"/rest/changePassword";
     public static final String DELETE_MY_TOPIC=BASE_URL+"/topic/delTopic";
+    public static final String DELETE_MY_COMMENT=BASE_URL+"/comment/delComment";
 
 
 }

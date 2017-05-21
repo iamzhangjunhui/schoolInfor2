@@ -73,7 +73,6 @@ public class SelectPhotoAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.mCheckBox.setVisibility(View.VISIBLE);
         final SelectPhoto selectPhoto = (SelectPhoto) getItem(position);
         String path = selectPhoto.getPath();
         File file = new File(path);
@@ -86,17 +85,6 @@ public class SelectPhotoAdapter extends BaseAdapter {
         } else {
             viewHolder.mCheckBox.setChecked(true);
         }
-//            viewHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (isSelect==0){
-//                       selectPhoto.setIsSelect(1);
-//                    }else {
-//                        selectPhoto.setIsSelect(0);
-//                    }
-//                    SelectPhotoAdapter.this.notifyDataSetChanged();
-//                }
-//            });
         return view;
     }
 
