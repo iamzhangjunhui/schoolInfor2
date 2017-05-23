@@ -51,6 +51,13 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
     private SeeMessageStudentAdapter adapter;
     private List<SeeMeaaseStudentEntity> list;
 
+
+    /*
+
+    确认和未确认的学生都在这个Activity，只是传入的值不同，获取到的数据不同
+
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +65,9 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
         ScreenManager.getScreenManager().pushActivity(this);
         ButterKnife.bind(this);
         init();
-        getSeeMessageStudents();
+        int TID = getIntent().getIntExtra("TID", 0);
+        String isQueren = getIntent().getStringExtra("isQueren");
+        getSeeMessageStudents(TID, isQueren);
 
 
     }
@@ -87,7 +96,7 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
 
 
     //测试数据
-    private void getSeeMessageStudents() {
+    private void getSeeMessageStudents(final int TID, final String isQueren) {
         new AsyncTask<Void, Void, List<SeeMeaaseStudentEntity>>() {
             @Override
             protected List<SeeMeaaseStudentEntity> doInBackground(Void... voids) {
@@ -97,7 +106,7 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
 //                seeMeaaseStudentEntities.add(entity1);
 //                seeMeaaseStudentEntities.add(entity2);
 //                return seeMeaaseStudentEntities;
-                return getQuerenOrNot(1229125632, "yes");
+                return getQuerenOrNot(TID, isQueren);
             }
 
             @Override

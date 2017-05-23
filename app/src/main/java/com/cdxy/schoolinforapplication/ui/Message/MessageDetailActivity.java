@@ -25,6 +25,10 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
     TextView txtTitle;
     @BindView(R.id.btn_right)
     Button btnRight;
+    @BindView(R.id.button6)  //ButterKnife绑定失败了
+    Button querenbtn;
+//    @BindView(R.id.button7)
+//    Button noquerenbtn;
     @BindView(R.id.txt_message_detail_title)
     TextView txtMessageDetailTitle;
     @BindView(R.id.txt_message_detail_content)
@@ -44,9 +48,12 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_detail);
+//        querenbtn = (Button)findViewById(R.id.button6);
+//        noquerenbtn = (Button)findViewById(R.id.button7);
         ButterKnife.bind(this);
         ScreenManager.getScreenManager().pushActivity(this);
         init();
+        onClick();
         String title = messageEntity.getTitle();
         if (!TextUtils.isEmpty(title))
             txtMessageDetailTitle.setText(title);
@@ -87,12 +94,48 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
         messageEntity = (MessageEntity) intent.getSerializableExtra("message");
     }
 
+    private void onClick(){
+        querenbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MessageDetailActivity.this, SeeMessageStudentsActivity.class);
+                intent.putExtra("TID", messageEntity.getTID());
+                intent.putExtra("isQueren", "yes");
+                startActivity(intent);
+            }
+        });
+
+//        noquerenbtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent1 = new Intent(MessageDetailActivity.this, SeeMessageStudentsActivity.class);
+//                intent1.putExtra("TID", messageEntity.getTID());
+//                intent1.putExtra("isQueren", "no");
+//                startActivity(intent1);
+//            }
+//        });
+
+    }
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 ScreenManager.getScreenManager().popActivty(this);
                 break;
+//            case R.id.button6:
+//                Intent intent = new Intent(MessageDetailActivity.this, SeeMessageStudentsActivity.class);
+//                intent.putExtra("TID", messageEntity.getTID());
+//                intent.putExtra("isQueren", "yes");
+//                startActivity(intent);
+//                break;
+//            case R.id.button7:
+//                Intent intent1 = new Intent(MessageDetailActivity.this, SeeMessageStudentsActivity.class);
+//                intent1.putExtra("TID", messageEntity.getTID());
+//                intent1.putExtra("isQueren", "no");
+//                startActivity(intent1);
+//                break;
         }
     }
 }

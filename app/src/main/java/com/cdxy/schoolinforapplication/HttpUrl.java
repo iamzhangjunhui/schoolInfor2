@@ -5,6 +5,7 @@ package com.cdxy.schoolinforapplication;
  */
 
 public class HttpUrl {
+//    private static final String BASE_URL="http://localhost:8080";
     private static final String BASE_URL="http://120.25.202.192/schoolinfo";
     public static final String SEND_MESSAGE=BASE_URL+"/jpush/fabu";
     public static final String GET_MESSAGE=BASE_URL+"/jpush/getMessage";
