@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class MessageEntity implements Serializable {
 
-    private long TID;
+    private int TID;
     private int isSelectAll;//发送时是否选择全选标志
     private String sendPersonName;//发送通知姓名
     private int messageType;//通知类型 1：重要 0 不重要
@@ -30,11 +30,11 @@ public class MessageEntity implements Serializable {
         this.content = content;
     }
 
-    public long getTID() {
+    public int getTID() {
         return TID;
     }
 
-    public void setTID(long TID) {
+    public void setTID(int TID) {
         this.TID = TID;
     }
 

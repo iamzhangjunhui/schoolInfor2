@@ -326,7 +326,7 @@ public class TopicFragment extends BaseFragment {
                     if (returnEntity.getCode() == 1) {
                         List<String> thumbs = new ArrayList<String>();
                         for (ReturnThumb thumb : returnEntity.getData()) {
-                            thumbs.add(thumb.getUserid());
+                            thumbs.add(thumb.getNickName());
                         }
                         topicEntity.setThumbPersonsNickname(thumbs);
                     } else {

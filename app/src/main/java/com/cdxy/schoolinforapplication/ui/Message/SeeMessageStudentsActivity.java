@@ -50,6 +50,13 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
     LinearLayout activitySeeMessageStudents;
     private SeeMessageStudentAdapter adapter;
     private List<SeeMeaaseStudentEntity> list;
+    String isQueren;
+
+    /*
+
+    确认和未确认的学生都在这个Activity，只是传入的值不同，获取到的数据不同
+
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +64,24 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
         setContentView(R.layout.activity_see_message_students);
         ScreenManager.getScreenManager().pushActivity(this);
         ButterKnife.bind(this);
+        int TID = getIntent().getIntExtra("TID", 0);
+        isQueren = getIntent().getStringExtra("isQueren");
         init();
-        getSeeMessageStudents();
+        getSeeMessageStudents(TID, isQueren);
 
 
     }
 
     @Override
     public void init() {
-        txtTitle.setText("查看情况");
-        btnRight.setText("未查看提醒");
+        if (isQueren.equals("yes")){
+            txtTitle.setText("查看情况");
+//            btnRight.setText("未查看提醒");
+        }else {
+            txtTitle.setText("未查看名单");
+//            btnRight.setText("未查看提醒");
+        }
+
         list = new ArrayList<>();
         adapter = new SeeMessageStudentAdapter(SeeMessageStudentsActivity.this, list);
         scrollSeeMessageStudent.setAdapter(adapter);
@@ -87,7 +102,7 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
 
 
     //测试数据
-    private void getSeeMessageStudents() {
+    private void getSeeMessageStudents(final int TID, final String isQueren) {
         new AsyncTask<Void, Void, List<SeeMeaaseStudentEntity>>() {
             @Override
             protected List<SeeMeaaseStudentEntity> doInBackground(Void... voids) {
@@ -97,7 +112,7 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
 //                seeMeaaseStudentEntities.add(entity1);
 //                seeMeaaseStudentEntities.add(entity2);
 //                return seeMeaaseStudentEntities;
-                return getQuerenOrNot(1229125632, "yes");
+                return getQuerenOrNot(TID, isQueren);
             }
 
             @Override

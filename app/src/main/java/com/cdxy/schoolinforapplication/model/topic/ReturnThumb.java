@@ -8,10 +8,12 @@ public class ReturnThumb {
     /**
      * topicid : 543545
      * userid : yyyyyy
+     * nickName: kaylee
      */
 
     private String topicid;
     private String userid;
+    private String nickName;
 
     public String getTopicid() {
         return topicid;
@@ -27,5 +29,13 @@ public class ReturnThumb {
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

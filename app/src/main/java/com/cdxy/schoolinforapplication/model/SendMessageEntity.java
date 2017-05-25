@@ -10,7 +10,7 @@ public class SendMessageEntity {
     private String title;
     private String content;
     private int messageType;
-    private List<String> sendTo;
+    private List<String> sendTolist;
     private String sendPersonName;
     private int isSelectAll;
 
@@ -21,7 +21,7 @@ public class SendMessageEntity {
         this.title = title;
         this.content = content;
         this.messageType = messageType;
-        this.sendTo = sendTo;
+        this.sendTolist = sendTo;
         this.sendPersonName = sendPersonName;
         this.isSelectAll = isSelectAll;
     }
@@ -51,11 +51,11 @@ public class SendMessageEntity {
     }
 
     public List<String> getSendTo() {
-        return sendTo;
+        return sendTolist;
     }
 
     public void setSendTo(List<String> sendTo) {
-        this.sendTo = sendTo;
+        this.sendTolist = sendTo;
     }
 
     public String getSendPersonName() {
