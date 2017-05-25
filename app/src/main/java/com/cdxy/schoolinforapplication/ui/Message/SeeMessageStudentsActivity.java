@@ -50,7 +50,7 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
     LinearLayout activitySeeMessageStudents;
     private SeeMessageStudentAdapter adapter;
     private List<SeeMeaaseStudentEntity> list;
-
+    String isQueren;
 
     /*
 
@@ -64,9 +64,9 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
         setContentView(R.layout.activity_see_message_students);
         ScreenManager.getScreenManager().pushActivity(this);
         ButterKnife.bind(this);
-        init();
         int TID = getIntent().getIntExtra("TID", 0);
-        String isQueren = getIntent().getStringExtra("isQueren");
+        isQueren = getIntent().getStringExtra("isQueren");
+        init();
         getSeeMessageStudents(TID, isQueren);
 
 
@@ -74,8 +74,14 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
 
     @Override
     public void init() {
-        txtTitle.setText("查看情况");
-        btnRight.setText("未查看提醒");
+        if (isQueren.equals("yes")){
+            txtTitle.setText("查看情况");
+//            btnRight.setText("未查看提醒");
+        }else {
+            txtTitle.setText("未查看名单");
+//            btnRight.setText("未查看提醒");
+        }
+
         list = new ArrayList<>();
         adapter = new SeeMessageStudentAdapter(SeeMessageStudentsActivity.this, list);
         scrollSeeMessageStudent.setAdapter(adapter);

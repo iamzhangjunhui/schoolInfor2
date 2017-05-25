@@ -84,7 +84,7 @@
             android:textSize="@dimen/small_text_size" />
 
             <Button
-                android:layout_marginTop="200dp"
+                android:layout_marginTop="180dp"
                 android:id="@+id/button6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,12 +92,19 @@
                 android:text="已查看消息学生列表" />
 
             <Button
-                android:layout_marginTop="20dp"
-                android:id="@+id/button7"
+
+                android:id="@+id/noseebtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="未查看消息学生列表" />
+
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="确认查看" />
         </LinearLayout>
 
     </ScrollView>

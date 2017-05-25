@@ -24,9 +24,9 @@ import com.cdxy.schoolinforapplication.model.SendMessageEntity;
 import com.cdxy.schoolinforapplication.model.tree.ChildEntity;
 import com.cdxy.schoolinforapplication.model.tree.ParentEntity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
-import com.cdxy.schoolinforapplication.ui.my.MyInformationActivity;
 import com.cdxy.schoolinforapplication.ui.widget.ScollerExpandableListView;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
+import com.cdxy.schoolinforapplication.util.SharedPreferenceManager;
 
 import org.json.JSONObject;
 
@@ -233,11 +233,13 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
             public void call(Subscriber<? super String> subscriber) {
                 MediaType JSON = MediaType.parse("application/json; charset=utf-8");
                 OkHttpClient okHttpClient = HttpUtil.getClient();
-                SendMessageEntity sendMessageEntity = new SendMessageEntity(title, content, messageTye, sendTo, MyInformationActivity.getUserid(), isSelectAll);
+                SendMessageEntity sendMessageEntity = new SendMessageEntity(title, content, messageTye, sendTo, SharedPreferenceManager.instance(SendMessageActivity.this).getUserInfor().getUserid(), isSelectAll);
                 String json = SchoolInforManager.gson.toJson(sendMessageEntity);
                 RequestBody formBody = RequestBody.create(JSON, json);
-                Request request = new Request.Builder().url(HttpUrl.SEND_MESSAGE)
-                        .post(formBody).build();
+//                Request request = new Request.Builder().url(HttpUrl.SEND_MESSAGE)
+//                        .post(formBody).build();
+                Request request = new Request.Builder().url(HttpUrl.SEND_MESSAGE+"?tongzhijson="+json)
+                        .get().build();
                 try {
                     Response response = okHttpClient.newCall(request).execute();
                     String result = response.body().string();
