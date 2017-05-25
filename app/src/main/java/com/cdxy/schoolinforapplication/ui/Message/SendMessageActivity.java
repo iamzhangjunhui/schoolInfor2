@@ -258,13 +258,16 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
                 if (returnEntity!=null){
                     if (returnEntity.getCode()==1){
                         toast(returnEntity.getData().toString());
+
                     }else {
                         toast(returnEntity.getMsg()+"");
                     }
                 }
-                progress.setVisibility(View.GONE);
+
             }
         });
+        progress.setVisibility(View.GONE);
+        finish();
 
     }
 

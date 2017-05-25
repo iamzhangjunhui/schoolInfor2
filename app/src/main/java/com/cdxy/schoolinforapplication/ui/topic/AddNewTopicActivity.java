@@ -170,6 +170,7 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
                     updateTopicPhotos();
                 } else {
                     addTopic();
+
                 }
 
                 break;
@@ -407,7 +408,6 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
         Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
-                btnRight.setClickable(false);
                 OkHttpClient okHttpClient = HttpUtil.getClient();
                 MediaType mediaType = MediaType.parse("image/png");
                 MultipartBody.Builder builder = new MultipartBody.Builder();
@@ -434,6 +434,7 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
                 ReturnEntity returnEntity= SchoolInforManager.gson.fromJson(s,ReturnEntity.class);
                 if (returnEntity!=null){
                     if (returnEntity.getCode()==1){
+                        progress.setVisibility(View.GONE);
                         addTopic();
                     }else {
                         toast(returnEntity.getMsg()+"");
@@ -441,7 +442,6 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
                 }else {
                     toast("上传图片失败");
                 }
-                btnRight.setClickable(true);
 
             }
         });
@@ -468,7 +468,6 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
                 Observable.create(new Observable.OnSubscribe<String>() {
                     @Override
                     public void call(Subscriber<? super String> subscriber) {
-                        btnRight.setClickable(false);
                         OkHttpClient okHttpClient = HttpUtil.getClient();
                         final Request request = new Request.Builder().url(HttpUrl.ADD_TOPIC + "?topicjson=" + topicjson).get().build();
                         try {
@@ -485,6 +484,7 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
                         if (returnEntity != null) {
                             if (returnEntity.getCode() == 1) {
                                 Intent intent=new Intent();
+                                intent.putExtra("flag",true);
                                 setResult(Constant.REQUEST_CODE_RETURN_FORM_ADD_TOPIC,intent);
                                 finish();
                             } else {
@@ -494,7 +494,6 @@ public class AddNewTopicActivity extends BaseActivity implements View.OnClickLis
                             toast("创建话题出错");
                         }
                         progress.setVisibility(View.GONE);
-                        btnRight.setClickable(true);
                     }
                 });
             }
