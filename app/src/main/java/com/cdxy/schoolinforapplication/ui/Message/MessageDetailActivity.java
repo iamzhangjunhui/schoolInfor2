@@ -141,7 +141,6 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
                 intent.putExtra("TID", messageEntity.getTID());
                 intent.putExtra("isQueren", "yes");
                 intent.putExtra("T", T);
-                intent.putExtra("message",messageEntity);
                 startActivity(intent);
             }
         });
@@ -154,6 +153,7 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
                 intent.putExtra("TID", messageEntity.getTID());
                 intent.putExtra("isQueren", "no");
                 intent.putExtra("T", T);
+                intent.putExtra("message",messageEntity);
                 startActivity(intent);
             }
         });
