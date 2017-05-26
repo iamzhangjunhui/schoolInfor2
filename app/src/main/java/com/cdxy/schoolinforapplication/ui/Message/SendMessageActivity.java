@@ -208,6 +208,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
         if (ckAll.isChecked()) {
             //如果全选
             isSelectAll = 1;
+            sendTo.add("全学院");
         } else {
             isSelectAll = 0;
             for (int i = 0; i < list.size(); i++) {

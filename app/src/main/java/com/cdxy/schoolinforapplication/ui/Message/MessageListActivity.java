@@ -19,10 +19,10 @@ import com.cdxy.schoolinforapplication.adapter.message.MessageListAdapter;
 import com.cdxy.schoolinforapplication.model.MessageReturnEntity;
 import com.cdxy.schoolinforapplication.model.message.MessageEntity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
-import com.cdxy.schoolinforapplication.ui.my.MyInformationActivity;
 import com.cdxy.schoolinforapplication.ui.widget.ScrollListView;
 import com.cdxy.schoolinforapplication.util.Constant;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
+import com.cdxy.schoolinforapplication.util.SharedPreferenceManager;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -165,16 +165,82 @@ public class MessageListActivity extends BaseActivity implements View.OnClickLis
 //            }
         });
 
-        //我发出的消息列表
-        if (messageType == MY_SEND_MESSAGE) {
-            List<MessageEntity> myMessageList = new ArrayList<>();
-            for (MessageEntity messageEntity : returnList) {
-                if (messageEntity.getSendPersonName().equals(MyInformationActivity.getUserid())) {
-                    myMessageList.add(messageEntity);
+
+//        if (messageType == MY_SEND_MESSAGE) {
+//            List<MessageEntity> myMessageList = new ArrayList<>();
+//            for (MessageEntity messageEntity : returnList) {
+//                if (messageEntity.getSendPersonName().equals(MyInformationActivity.getUserid())) {
+//                    myMessageList.add(messageEntity);
+//                }
+//            }
+//            return myMessageList;
+//        }
+
+        return returnList;
+    }
+
+    //我发出的消息列表
+    private List<MessageEntity> getMyMessage(final String username) {
+        final List<MessageEntity> returnList = new ArrayList<>();
+        Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                OkHttpClient okHttpClient = HttpUtil.getClient();
+                MessageEntity messageEntity = new MessageEntity();
+
+                Request request = new Request.Builder().url(HttpUrl.GET_MyMESSAGE + "?userid=" + username)
+                        .get()
+                        .build();
+                try {
+                    Response response = okHttpClient.newCall(request).execute();
+                    String result = response.body().string();
+//                    JSONObject jsonObject = new JSONObject(result);
+//                    JSONObject result1 = jsonObject.optJSONObject("result");
+//                    String array = jsonObject.optJSONArray("data");
+
+                    subscriber.onNext(result);
+//                    subscriber.onCompleted();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-            return myMessageList;
-        }
+        }).subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                int messageNumber;
+                Type listType = new TypeToken<List<MessageReturnEntity>>() {
+                }.getType();
+                MessageReturnEntity<List<MessageEntity>> returnEntity = SchoolInforManager.gson.fromJson(s, MessageReturnEntity.class);
+                List<MessageEntity> entityList = new ArrayList<>();
+//                if (returnEntity != null) {
+//                    returnEntity = gson.fromJson(s, new TypeToken<ReturnEntity<List<ReturnTopicEntity>>>() {
+//                    }.getType());
+                if (returnEntity.getCode() == 1) {
+                    List<MessageEntity> returnTopicList = returnEntity.getData();
+//                        returnList.addAll(returnTopicList);
+                    messageNumber = returnTopicList.size();
+                    for (int j = 0; j < messageNumber; j++) {
+                        long TID = returnTopicList.get(j).getTID();
+                        String userid = returnTopicList.get(j).getSendPersonName();
+                        if (TID != 0 && (!TextUtils.isEmpty(userid))) {
+                            MessageEntity messageEntity = new MessageEntity();
+                            messageEntity = returnTopicList.get(j);
+                            messageEntity.setContent(returnTopicList.get(j).getContent());
+                            messageEntity.setTime(returnTopicList.get(j).getTime());
+                            messageEntity.setMessageType(returnTopicList.get(j).getMessageType());
+                            messageEntity.setSendPersonName(userid);
+                            messageEntity.setTitle(returnTopicList.get(j).getTitle());
+                            messageEntity.setSendTo(returnTopicList.get(j).getSendTo());
+                            returnList.add(messageEntity);
+                        }
+
+                    }
+
+                }
+            }
+//            }
+        });
 
         return returnList;
     }
@@ -241,7 +307,7 @@ public class MessageListActivity extends BaseActivity implements View.OnClickLis
 //                List<MessageEntity> entityList = new ArrayList<>();
 //                entityList.add(entity1);
 //                entityList.add(entity2);
-                return getMessage(messageType);
+                return getMyMessage(SharedPreferenceManager.instance(MessageListActivity.this).getUserInfor().getUserid());
             }
 
             @Override

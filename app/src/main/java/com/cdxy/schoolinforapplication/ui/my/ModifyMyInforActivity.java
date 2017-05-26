@@ -163,7 +163,7 @@ public class ModifyMyInforActivity extends BaseActivity implements View.OnClickL
                 UserInforEntity userInforEntity = new UserInforEntity(userInfor.getUserid(), edtNickname.getText().toString(), edtRealname.getText().toString(),
                         txtDepartment.getText().toString(), txtClass.getText().toString(), edtStudentId.getText().toString(),
                         sex, txtBirthday.getText().toString(), txtNation.getText().toString(), edtAddress.getText().toString(),
-                        edtHobby.getText().toString());
+                        edtHobby.getText().toString(),userInfor.getShenfen());
                 String userInforJson = SchoolInforManager.gson.toJson(userInforEntity);
                 updateUserInfor(userInforJson, userInfor.getUserid());
                 break;

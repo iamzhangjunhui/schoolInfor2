@@ -48,9 +48,6 @@ import com.cdxy.schoolinforapplication.util.GetUserInfor;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
 import com.cdxy.schoolinforapplication.util.SharedPreferenceManager;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -206,6 +203,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (!TextUtils.equals(department, "null")) {
                 txtMyDepartment.setText(department);
             }
+        }
+    }
+
+    public boolean isTeacher() {
+        if (SharedPreferenceManager.instance(this).getUserInfor().getShenfen().equals("teacher")) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -445,9 +450,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.layout_bottom_message:
                 txtTitle.setText("消息中心");
-                //                String identity=SharedPreferenceManager.instance(MainActivity.this).getSharedPreferences().getString(SharedPreferenceManager.IDENTITY,null);
-                String identity = "老师";
-                if (identity.equals("老师")) {
+                String identity = SharedPreferenceManager.instance(MainActivity.this).getUserInfor().getShenfen();
+//                String identity = "老师";
+                if (identity.equals("teacher")) {
                     btnRight.setText("发送消息");
                     btnRight.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -552,10 +557,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         }
-        if (resultCode == Constant.REQUEST_CODE_RETURN_FORM_ADD_TOPIC&&requestCode==1) {
-            isReturnFromAddTopic = data.getBooleanExtra("flag",false);
-        }else {
-            isReturnFromAddTopic=false;
+        if (resultCode == Constant.REQUEST_CODE_RETURN_FORM_ADD_TOPIC && requestCode == 1) {
+            isReturnFromAddTopic = data.getBooleanExtra("flag", false);
+        } else {
+            isReturnFromAddTopic = false;
         }
     }
 

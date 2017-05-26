@@ -9,6 +9,7 @@ public class HttpUrl {
     private static final String BASE_URL="http://120.25.202.192/schoolinfo";
     public static final String SEND_MESSAGE=BASE_URL+"/jpush/fabu";
     public static final String GET_MESSAGE=BASE_URL+"/jpush/getMessage";
+    public static final String GET_MyMESSAGE=BASE_URL+"/jpush/getMyMessage";
     public static final String QUEREN_MESSAGE=BASE_URL+"/jpush/queren";
     public static final String GET_QUERENORNOT=BASE_URL+"/jpush/getQuerenOrNot";
     public static final String SURE_RECEIVE_MESSAGE=BASE_URL+"/Mjshou";
