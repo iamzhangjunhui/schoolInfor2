@@ -16,6 +16,7 @@ import com.cdxy.schoolinforapplication.SchoolInforManager;
 import com.cdxy.schoolinforapplication.ScreenManager;
 import com.cdxy.schoolinforapplication.model.MessageReturnEntity;
 import com.cdxy.schoolinforapplication.model.message.MessageEntity;
+import com.cdxy.schoolinforapplication.ui.MainActivity;
 import com.cdxy.schoolinforapplication.ui.base.BaseActivity;
 import com.cdxy.schoolinforapplication.util.HttpUtil;
 import com.cdxy.schoolinforapplication.util.SharedPreferenceManager;
@@ -62,6 +63,7 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
     LinearLayout activityMessageDetail;
     private MessageEntity messageEntity;
     private String messageType;
+    private String T;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_message_detail);
         ButterKnife.bind(this);
         ScreenManager.getScreenManager().pushActivity(this);
+        isTeacher();
         init();
         onClick();
         String title = messageEntity.getTitle();
@@ -85,6 +88,7 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
             txtMessageDetailSender.setText(sender);
         String sendTime = messageEntity.getTime();
         if (!TextUtils.isEmpty(sendTime))
+            T = sendTime;
             txtMessageDetailSendTime.setText(sendTime);
         int type = messageEntity.getMessageType();
 //        switch (messageType) {
@@ -111,6 +115,18 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
         messageEntity = (MessageEntity) intent.getSerializableExtra("message");
     }
 
+
+    private void isTeacher(){
+        MainActivity mainActivity = new MainActivity();
+        if (mainActivity.isTeacher()){
+            queren.setVisibility(View.GONE);
+        }else {
+            querenbtn.setVisibility(View.GONE);
+            noseebtn.setVisibility(View.GONE);
+        }
+
+    }
+
     private void onClick() {
 
         //查看已确认学生列表
@@ -120,6 +136,7 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
                 Intent intent = new Intent(MessageDetailActivity.this, SeeMessageStudentsActivity.class);
                 intent.putExtra("TID", messageEntity.getTID());
                 intent.putExtra("isQueren", "yes");
+                intent.putExtra("T", T);
                 startActivity(intent);
             }
         });
@@ -131,6 +148,7 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
                 Intent intent = new Intent(MessageDetailActivity.this, SeeMessageStudentsActivity.class);
                 intent.putExtra("TID", messageEntity.getTID());
                 intent.putExtra("isQueren", "no");
+                intent.putExtra("T", T);
                 startActivity(intent);
             }
         });
@@ -195,18 +213,6 @@ public class MessageDetailActivity extends BaseActivity implements View.OnClickL
             case R.id.img_back:
                 ScreenManager.getScreenManager().popActivty(this);
                 break;
-//            case R.id.button6:
-//                Intent intent = new Intent(MessageDetailActivity.this, SeeMessageStudentsActivity.class);
-//                intent.putExtra("TID", messageEntity.getTID());
-//                intent.putExtra("isQueren", "yes");
-//                startActivity(intent);
-//                break;
-//            case R.id.button7:
-//                Intent intent1 = new Intent(MessageDetailActivity.this, SeeMessageStudentsActivity.class);
-//                intent1.putExtra("TID", messageEntity.getTID());
-//                intent1.putExtra("isQueren", "no");
-//                startActivity(intent1);
-//                break;
         }
     }
 }

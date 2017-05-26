@@ -51,6 +51,7 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
     private SeeMessageStudentAdapter adapter;
     private List<SeeMeaaseStudentEntity> list;
     String isQueren;
+    String T;
 
     /*
 
@@ -66,6 +67,7 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
         ButterKnife.bind(this);
         int TID = getIntent().getIntExtra("TID", 0);
         isQueren = getIntent().getStringExtra("isQueren");
+        T = getIntent().getStringExtra("T");
         init();
         getSeeMessageStudents(TID, isQueren);
 
@@ -165,7 +167,7 @@ public class SeeMessageStudentsActivity extends BaseActivity implements View.OnC
                         if (TID!=0 && (!TextUtils.isEmpty(userid))) {
                             SeeMeaaseStudentEntity messageEntity = new SeeMeaaseStudentEntity();
                             messageEntity = seeMeaaseStudentEntityList.get(j);
-                            messageEntity.setQueshi(seeMeaaseStudentEntityList.get(j).getQueshi());
+                            messageEntity.setQueshi(T);
                             messageEntity.setBanji(seeMeaaseStudentEntityList.get(j).getBanji());
                             messageEntity.setXibie(seeMeaaseStudentEntityList.get(j).getXibie());
                             messageEntity.setUserid(userid);

@@ -12,7 +12,7 @@ public class SeeMeaaseStudentEntity {
 //    private String accept_time;
 
     private String userid;
-    private String name;
+    private String xingming;
     private String xibie;
     private String banji;
     private String phone;
@@ -43,11 +43,11 @@ public class SeeMeaaseStudentEntity {
     }
 
     public String getName() {
-        return name;
+        return xingming;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.xingming = name;
     }
 
     public String getXibie() {
@@ -102,7 +102,7 @@ public class SeeMeaaseStudentEntity {
     public String toString() {
         return "SeeMeaaseStudentEntity{" +
                 "userid='" + userid + '\'' +
-                ", name='" + name + '\'' +
+                ", name='" + xingming + '\'' +
                 ", xibie='" + xibie + '\'' +
                 ", banji='" + banji + '\'' +
                 ", phone='" + phone + '\'' +
