@@ -65,6 +65,9 @@ public class MessageFragment extends BaseFragment {
             identity = userInforEntity.getShenfen();
             if (identity.equals("teacher")) {
                 layoutMyMessage.setVisibility(View.VISIBLE);
+            }else {
+                layoutMyMessage.setVisibility(View.GONE);
+
             }
         }
 

@@ -550,10 +550,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         }
                     }
                 }
-                if (resultCode == Constant.REQUEST_CODE_RETURN_FORM_ADD_TOPIC) {
-                    isReturnFromAddTopic = true;
-                }
             }
+        }
+        if (resultCode == Constant.REQUEST_CODE_RETURN_FORM_ADD_TOPIC&&requestCode==1) {
+            isReturnFromAddTopic = data.getBooleanExtra("flag",false);
+        }else {
+            isReturnFromAddTopic=false;
         }
     }
 

@@ -172,9 +172,7 @@ public class TopicFragment extends BaseFragment {
 
     private void getAllTopic() {
         list.clear();
-        if (MainActivity.isReturnFromAddTopic) {
-            handler.sendEmptyMessage(2);
-        }
+        handler.sendEmptyMessage(2);
         Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
