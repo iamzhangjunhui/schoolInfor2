@@ -81,7 +81,7 @@ public class MessageListAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(sendTime))
             viewHolder.txtMessageSendTime.setText(sendTime);
         int messageType = entity.getMessageType();
-        if (messageFrom == Constant.MY_SEND_MESSAGE && messageType == 1)
+        if (messageType == 1)
             viewHolder.flagImportantMessage.setVisibility(View.VISIBLE);
         return view;
     }
